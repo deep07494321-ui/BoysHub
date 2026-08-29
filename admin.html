@@ -1,0 +1,1167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>BoysHub Admin Panel</title>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+ font-family:Arial,Helvetica,sans-serif;
+ background:#f4f6f9;
+ color:#172033;
+}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer;border:0}
+.topbar{
+ height:64px;background:#111;color:#fff;
+ display:flex;align-items:center;justify-content:space-between;
+ padding:0 22px;position:sticky;top:0;z-index:50;
+}
+.logo{font-size:22px;font-weight:800}
+.logo span{color:#f5b400}
+.menu-btn{display:none;background:#222;color:#fff;padding:10px;border-radius:8px}
+.admin-user{display:flex;align-items:center;gap:10px}
+.avatar{
+ width:36px;height:36px;border-radius:50%;background:#f5b400;
+ color:#111;display:flex;align-items:center;justify-content:center;font-weight:bold
+}
+.layout{display:flex;min-height:calc(100vh - 64px)}
+.sidebar{
+ width:245px;background:#fff;border-right:1px solid #ddd;
+ padding:18px 12px;position:fixed;top:64px;bottom:0;overflow:auto;
+}
+.nav-title{font-size:11px;color:#888;font-weight:bold;padding:14px 12px 7px}
+.nav{
+ width:100%;padding:12px;border-radius:8px;background:none;
+ text-align:left;color:#394150;margin-bottom:3px;
+}
+.nav:hover,.nav.active{background:#111;color:#fff}
+.main{margin-left:245px;width:calc(100% - 245px);padding:25px}
+.page{display:none}
+.page.active{display:block}
+.head{
+ display:flex;justify-content:space-between;align-items:center;
+ margin-bottom:22px;gap:10px;flex-wrap:wrap
+}
+.head h1{font-size:27px}
+.btn{
+ padding:11px 16px;border-radius:7px;background:#111;color:#fff;font-weight:bold
+}
+.btn.gold{background:#f5b400;color:#111}
+.btn.red{background:#dc3545}
+.btn.green{background:#198754}
+.btn.gray{background:#e9ecef;color:#222}
+.cards{
+ display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:22px
+}
+.card{
+ background:#fff;border:1px solid #e1e4e8;border-radius:12px;
+ padding:20px;box-shadow:0 2px 8px #00000008
+}
+.card small{color:#777}
+.card h2{margin:8px 0;font-size:28px}
+.card .icon{font-size:25px}
+.panel{
+ background:#fff;border:1px solid #e1e4e8;border-radius:12px;
+ padding:20px;margin-bottom:20px
+}
+.panel h3{margin-bottom:16px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.form-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:15px}
+.field{margin-bottom:13px}
+.field label{display:block;font-size:13px;font-weight:bold;margin-bottom:6px}
+.field input,.field select,.field textarea{
+ width:100%;padding:11px;border:1px solid #ccd2d9;
+ border-radius:7px;outline:none;background:#fff
+}
+.field textarea{min-height:90px;resize:vertical}
+.table-wrap{overflow:auto}
+table{width:100%;border-collapse:collapse;min-width:700px}
+th,td{padding:12px;border-bottom:1px solid #eee;text-align:left;font-size:14px}
+th{background:#f7f7f7}
+.badge{padding:5px 9px;border-radius:20px;font-size:11px;font-weight:bold}
+.badge.green{background:#d1fae5;color:#087443}
+.badge.yellow{background:#fff3cd;color:#856404}
+.badge.red{background:#fee2e2;color:#a51d2d}
+.badge.blue{background:#dbeafe;color:#1d4ed8}
+.product-img{
+ width:45px;height:45px;border-radius:6px;object-fit:cover;
+ background:#eee
+}
+.actions{display:flex;gap:6px;flex-wrap:wrap}
+.action{
+ padding:7px 10px;border-radius:6px;background:#eee;font-size:12px
+}
+.action.edit{background:#dbeafe;color:#1d4ed8}
+.action.delete{background:#fee2e2;color:#dc3545}
+.search{
+ padding:11px;border:1px solid #ccc;border-radius:7px;width:280px
+}
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:15px}
+.switch{
+ width:46px;height:25px;background:#ccc;border-radius:20px;
+ position:relative;display:inline-block;cursor:pointer
+}
+.switch:after{
+ content:"";position:absolute;width:19px;height:19px;
+ background:white;border-radius:50%;top:3px;left:3px;transition:.2s
+}
+.switch.on{background:#198754}
+.switch.on:after{left:24px}
+.setting{
+ display:flex;justify-content:space-between;align-items:center;
+ padding:15px 0;border-bottom:1px solid #eee
+}
+.modal{
+ display:none;position:fixed;inset:0;background:#0008;
+ align-items:center;justify-content:center;z-index:100
+}
+.modal.show{display:flex}
+.modal-box{
+ background:#fff;width:min(700px,94%);max-height:90vh;overflow:auto;
+ border-radius:12px;padding:22px
+}
+.modal-head{display:flex;justify-content:space-between;margin-bottom:18px}
+.close{background:#eee;border-radius:50%;width:32px;height:32px}
+.stat-up{color:#198754;font-size:12px}
+.empty{text-align:center;padding:30px;color:#888}
+.notice{
+ background:#fff8df;border:1px solid #f5d36b;
+ padding:12px;border-radius:8px;margin-bottom:20px;font-size:13px
+}
+@media(max-width:900px){
+ .cards{grid-template-columns:repeat(2,1fr)}
+ .grid2,.grid3,.form-grid{grid-template-columns:1fr}
+ .sidebar{transform:translateX(-100%);transition:.2s;z-index:70}
+ .sidebar.open{transform:translateX(0)}
+ .main{margin-left:0;width:100%}
+ .menu-btn{display:block}
+}
+@media(max-width:550px){
+ .cards{grid-template-columns:1fr}
+ .main{padding:15px}
+ .search{width:100%}
+}
+</style>
+</head>
+
+<body>
+
+<header class="topbar">
+ <div style="display:flex;align-items:center;gap:12px">
+  <button class="menu-btn" onclick="toggleMenu()">☰</button>
+  <div class="logo">Boys<span>Hub</span> ADMIN</div>
+ </div>
+ <div class="admin-user">
+  <div>
+   <b>Administrator</b><br>
+   <small style="color:#aaa">Store Manager</small>
+  </div>
+  <div class="avatar">A</div>
+ </div>
+</header>
+
+<div class="layout">
+
+<aside class="sidebar" id="sidebar">
+
+ <div class="nav-title">MAIN</div>
+ <button class="nav active" onclick="showPage('dashboard',this)">📊 Dashboard</button>
+ <button class="nav" onclick="showPage('products',this)">📦 Products</button>
+ <button class="nav" onclick="showPage('inventory',this)">🏷️ Inventory</button>
+ <button class="nav" onclick="showPage('orders',this)">🛒 Orders</button>
+ <button class="nav" onclick="showPage('customers',this)">👥 Customers</button>
+
+ <div class="nav-title">MARKETING</div>
+ <button class="nav" onclick="showPage('discounts',this)">🎟️ Discounts</button>
+ <button class="nav" onclick="showPage('ads',this)">📢 Home Ads</button>
+
+ <div class="nav-title">STORE</div>
+ <button class="nav" onclick="showPage('payments',this)">💳 Payments</button>
+ <button class="nav" onclick="showPage('homepage',this)">🎨 Homepage</button>
+ <button class="nav" onclick="showPage('settings',this)">⚙️ Settings</button>
+
+ <div class="nav-title">TOOLS</div>
+ <button class="nav" onclick="exportProducts()">📤 Export Products</button>
+ <button class="nav" onclick="exportOrders()">📥 Export Orders</button>
+ <button class="nav" onclick="backupData()">💾 Backup Store</button>
+</aside>
+
+<main class="main">
+
+<!-- DASHBOARD -->
+<section class="page active" id="dashboard">
+ <div class="head">
+  <div>
+   <h1>Dashboard</h1>
+   <p style="color:#777">Welcome to your BoysHub store.</p>
+  </div>
+  <button class="btn gold" onclick="showPage('products')">+ Add Product</button>
+ </div>
+
+ <div class="notice">
+  ⚠️ <b>Demo Admin:</b> Data is stored in this browser using localStorage.
+  A real production store should use secure authentication and a database.
+ </div>
+
+ <div class="cards">
+  <div class="card">
+   <div class="icon">💰</div><small>Total Sales</small>
+   <h2 id="totalSales">₹0</h2><span class="stat-up">↑ Store sales</span>
+  </div>
+  <div class="card">
+   <div class="icon">🛒</div><small>Total Orders</small>
+   <h2 id="totalOrders">0</h2><span class="stat-up">↑ All orders</span>
+  </div>
+  <div class="card">
+   <div class="icon">📦</div><small>Products</small>
+   <h2 id="totalProducts">0</h2><span>Listed products</span>
+  </div>
+  <div class="card">
+   <div class="icon">👥</div><small>Customers</small>
+   <h2 id="totalCustomers">0</h2><span>Registered customers</span>
+  </div>
+ </div>
+
+ <div class="grid2">
+  <div class="panel">
+   <h3>Recent Orders</h3>
+   <div id="recentOrders"></div>
+  </div>
+  <div class="panel">
+   <h3>Low Stock Products</h3>
+   <div id="lowStock"></div>
+  </div>
+ </div>
+</section>
+
+<!-- PRODUCTS -->
+<section class="page" id="products">
+ <div class="head">
+  <div><h1>Products</h1><p style="color:#777">Manage your complete catalogue.</p></div>
+  <button class="btn gold" onclick="openProductModal()">+ Add Product</button>
+ </div>
+
+ <div class="panel">
+  <div class="toolbar">
+   <input class="search" id="productSearch" placeholder="Search products..." oninput="renderProducts()">
+   <select id="categoryFilter" onchange="renderProducts()">
+    <option value="">All Categories</option>
+    <option>Men</option>
+    <option>T-Shirt</option>
+    <option>Shirt</option>
+    <option>Jeans</option>
+    <option>Hoodie</option>
+    <option>Accessories</option>
+   </select>
+   <button class="btn gray" onclick="exportProducts()">Export CSV</button>
+  </div>
+
+  <div class="table-wrap">
+   <table>
+    <thead>
+     <tr>
+      <th>Product</th><th>SKU</th><th>Category</th>
+      <th>Price</th><th>Stock</th><th>Status</th><th>Actions</th>
+     </tr>
+    </thead>
+    <tbody id="productTable"></tbody>
+   </table>
+  </div>
+ </div>
+</section>
+
+<!-- INVENTORY -->
+<section class="page" id="inventory">
+ <div class="head">
+  <div><h1>Inventory</h1><p style="color:#777">Monitor stock levels.</p></div>
+ </div>
+ <div class="cards">
+  <div class="card"><small>Total Units</small><h2 id="stockTotal">0</h2></div>
+  <div class="card"><small>Low Stock</small><h2 id="stockLow">0</h2></div>
+  <div class="card"><small>Out of Stock</small><h2 id="stockOut">0</h2></div>
+  <div class="card"><small>Stock Value</small><h2 id="stockValue">₹0</h2></div>
+ </div>
+ <div class="panel">
+  <h3>Stock Management</h3>
+  <div class="table-wrap">
+   <table>
+    <thead><tr><th>Product</th><th>SKU</th><th>Current Stock</th><th>Stock Status</th><th>Update</th></tr></thead>
+    <tbody id="inventoryTable"></tbody>
+   </table>
+  </div>
+ </div>
+</section>
+
+<!-- ORDERS -->
+<section class="page" id="orders">
+ <div class="head">
+  <div><h1>Orders</h1><p style="color:#777">Manage customer orders and payment status.</p></div>
+  <button class="btn gray" onclick="exportOrders()">Export Orders</button>
+ </div>
+
+ <div class="panel">
+  <div class="toolbar">
+   <input class="search" id="orderSearch" placeholder="Search order/customer..." oninput="renderOrders()">
+   <select id="orderStatusFilter" onchange="renderOrders()">
+    <option value="">All Status</option>
+    <option>Pending</option>
+    <option>Confirmed</option>
+    <option>Shipped</option>
+    <option>Delivered</option>
+    <option>Cancelled</option>
+   </select>
+  </div>
+  <div class="table-wrap">
+   <table>
+    <thead>
+     <tr><th>Order ID</th><th>Customer</th><th>Amount</th><th>Payment</th><th>Status</th><th>Date</th><th>Action</th></tr>
+    </thead>
+    <tbody id="orderTable"></tbody>
+   </table>
+  </div>
+ </div>
+</section>
+
+<!-- CUSTOMERS -->
+<section class="page" id="customers">
+ <div class="head">
+  <div><h1>Customers</h1><p style="color:#777">Customer management.</p></div>
+ </div>
+ <div class="panel">
+  <div class="toolbar">
+   <input class="search" id="customerSearch" placeholder="Search customers..." oninput="renderCustomers()">
+  </div>
+  <div class="table-wrap">
+   <table>
+    <thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Orders</th><th>Total Spent</th><th>Action</th></tr></thead>
+    <tbody id="customerTable"></tbody>
+   </table>
+  </div>
+ </div>
+</section>
+
+<!-- DISCOUNTS -->
+<section class="page" id="discounts">
+ <div class="head">
+  <div><h1>Discounts & Coupons</h1><p style="color:#777">Create and manage promotional offers.</p></div>
+  <button class="btn gold" onclick="openDiscountModal()">+ Create Coupon</button>
+ </div>
+ <div class="panel">
+  <div class="table-wrap">
+   <table>
+    <thead><tr><th>Code</th><th>Type</th><th>Value</th><th>Minimum Order</th><th>Status</th><th>Action</th></tr></thead>
+    <tbody id="discountTable"></tbody>
+   </table>
+  </div>
+ </div>
+</section>
+
+<!-- ADS -->
+<section class="page" id="ads">
+ <div class="head">
+  <div><h1>Homepage Ads</h1><p style="color:#777">Manage banners and promotional sections.</p></div>
+  <button class="btn gold" onclick="openAdModal()">+ Add Advertisement</button>
+ </div>
+ <div id="adsList"></div>
+</section>
+
+<!-- PAYMENTS -->
+<section class="page" id="payments">
+ <div class="head"><div><h1>Payment Methods</h1><p style="color:#777">Configure available payment options.</p></div></div>
+
+ <div class="grid2">
+  <div class="panel">
+   <h3>Customer Payment Methods</h3>
+
+   <div class="setting">
+    <div><b>Cash on Delivery</b><br><small>Allow COD orders</small></div>
+    <span class="switch on" id="codSwitch" onclick="toggleSwitch(this)"></span>
+   </div>
+
+   <div class="setting">
+    <div><b>Online / Prepaid</b><br><small>UPI, cards, net banking</small></div>
+    <span class="switch on" id="prepaidSwitch" onclick="toggleSwitch(this)"></span>
+   </div>
+
+   <div class="setting">
+    <div><b>UPI</b><br><small>Enable UPI payment</small></div>
+    <span class="switch on" onclick="toggleSwitch(this)"></span>
+   </div>
+
+   <div class="setting">
+    <div><b>Cards</b><br><small>Credit / Debit cards</small></div>
+    <span class="switch on" onclick="toggleSwitch(this)"></span>
+   </div>
+  </div>
+
+  <div class="panel">
+   <h3>Payment Settings</h3>
+   <div class="field"><label>COD Charge (₹)</label><input id="codCharge" type="number" value="0"></div>
+   <div class="field"><label>Free COD Above (₹)</label><input type="number" value="999"></div>
+   <div class="field"><label>Currency</label><select><option>INR - ₹</option></select></div>
+   <button class="btn green" onclick="saveSettings()">Save Payment Settings</button>
+  </div>
+ </div>
+</section>
+
+<!-- HOMEPAGE -->
+<section class="page" id="homepage">
+ <div class="head"><div><h1>Homepage Editor</h1><p style="color:#777">Control how your store homepage looks.</p></div></div>
+
+ <div class="panel">
+  <h3>Hero Section</h3>
+  <div class="form-grid">
+   <div class="field"><label>Main Heading</label><input id="heroTitle" value="Upgrade Your Style"></div>
+   <div class="field"><label>Subtitle</label><input id="heroSubtitle" value="Premium Men's Fashion"></div>
+   <div class="field"><label>Button Text</label><input value="Shop Now"></div>
+   <div class="field"><label>Button Link</label><input value="#products"></div>
+   <div class="field"><label>Hero Image URL</label><input placeholder="https://..."></div>
+   <div class="field"><label>Announcement Bar</label><input value="Free Shipping on Orders Above ₹999"></div>
+  </div>
+  <button class="btn green" onclick="saveHomepage()">Save Homepage</button>
+ </div>
+
+ <div class="grid3">
+  <div class="panel">
+   <h3>Featured Products</h3>
+   <p>Show featured products on homepage.</p>
+   <br><span class="switch on" onclick="toggleSwitch(this)"></span>
+  </div>
+  <div class="panel">
+   <h3>Sale Section</h3>
+   <p>Show products with discounts.</p>
+   <br><span class="switch on" onclick="toggleSwitch(this)"></span>
+  </div>
+  <div class="panel">
+   <h3>New Arrivals</h3>
+   <p>Show latest products.</p>
+   <br><span class="switch on" onclick="toggleSwitch(this)"></span>
+  </div>
+ </div>
+</section>
+
+<!-- SETTINGS -->
+<section class="page" id="settings">
+ <div class="head"><div><h1>Store Settings</h1><p style="color:#777">General store configuration.</p></div></div>
+
+ <div class="panel">
+  <h3>General Information</h3>
+  <div class="form-grid">
+   <div class="field"><label>Store Name</label><input id="storeName" value="BoysHub"></div>
+   <div class="field"><label>Store Email</label><input type="email" placeholder="support@boyshub.in"></div>
+   <div class="field"><label>Store Phone</label><input placeholder="+91 XXXXX XXXXX"></div>
+   <div class="field"><label>GSTIN</label><input placeholder="Optional"></div>
+   <div class="field"><label>Default Shipping Charge</label><input type="number" value="60"></div>
+   <div class="field"><label>Free Shipping Above</label><input type="number" value="999"></div>
+  </div>
+  <button class="btn green" onclick="saveSettings()">Save Settings</button>
+ </div>
+
+ <div class="panel">
+  <h3>Store Controls</h3>
+  <div class="setting">
+   <div><b>Store Open</b><br><small>Customers can place orders</small></div>
+   <span class="switch on" onclick="toggleSwitch(this)"></span>
+  </div>
+  <div class="setting">
+   <div><b>Maintenance Mode</b><br><small>Temporarily disable shopping</small></div>
+   <span class="switch" onclick="toggleSwitch(this)"></span>
+  </div>
+  <div class="setting">
+   <div><b>Customer Reviews</b><br><small>Allow product reviews</small></div>
+   <span class="switch on" onclick="toggleSwitch(this)"></span>
+  </div>
+ </div>
+
+ <div class="panel">
+  <h3>Danger Zone</h3>
+  <button class="btn red" onclick="clearStore()">Clear Demo Store Data</button>
+ </div>
+</section>
+
+</main>
+</div>
+
+<!-- PRODUCT MODAL -->
+<div class="modal" id="productModal">
+ <div class="modal-box">
+  <div class="modal-head">
+   <h2 id="productModalTitle">Add Product</h2>
+   <button class="close" onclick="closeModal('productModal')">×</button>
+  </div>
+
+  <input type="hidden" id="editProductId">
+
+  <div class="form-grid">
+   <div class="field">
+    <label>Product Name *</label>
+    <input id="pName" placeholder="Premium Cotton T-Shirt">
+   </div>
+   <div class="field">
+    <label>SKU *</label>
+    <input id="pSku" placeholder="BH-TS-001">
+   </div>
+   <div class="field">
+    <label>Category</label>
+    <select id="pCategory">
+     <option>Men</option><option>T-Shirt</option><option>Shirt</option>
+     <option>Jeans</option><option>Hoodie</option><option>Accessories</option>
+    </select>
+   </div>
+   <div class="field">
+    <label>Price *</label>
+    <input id="pPrice" type="number" placeholder="999">
+   </div>
+   <div class="field">
+    <label>Compare Price</label>
+    <input id="pCompare" type="number" placeholder="1499">
+   </div>
+   <div class="field">
+    <label>Inventory *</label>
+    <input id="pStock" type="number" value="10">
+   </div>
+   <div class="field">
+    <label>Size</label>
+    <input id="pSize" placeholder="S, M, L, XL, XXL">
+   </div>
+   <div class="field">
+    <label>Color</label>
+    <input id="pColor" placeholder="Black">
+   </div>
+  </div>
+
+  <div class="field">
+   <label>Product Image URL</label>
+   <input id="pImage" placeholder="https://example.com/image.jpg">
+  </div>
+
+  <div class="field">
+   <label>Description</label>
+   <textarea id="pDescription" placeholder="Product description..."></textarea>
+  </div>
+
+  <div style="display:flex;gap:10px;justify-content:flex-end">
+   <button class="btn gray" onclick="closeModal('productModal')">Cancel</button>
+   <button class="btn gold" onclick="saveProduct()">Save Product</button>
+  </div>
+ </div>
+</div>
+
+<!-- DISCOUNT MODAL -->
+<div class="modal" id="discountModal">
+ <div class="modal-box">
+  <div class="modal-head">
+   <h2>Create Coupon</h2>
+   <button class="close" onclick="closeModal('discountModal')">×</button>
+  </div>
+  <div class="form-grid">
+   <div class="field"><label>Coupon Code</label><input id="dCode" placeholder="WELCOME10"></div>
+   <div class="field"><label>Discount Type</label><select id="dType"><option>Percentage</option><option>Fixed</option></select></div>
+   <div class="field"><label>Discount Value</label><input id="dValue" type="number"></div>
+   <div class="field"><label>Minimum Order</label><input id="dMin" type="number" value="0"></div>
+  </div>
+  <button class="btn gold" onclick="saveDiscount()">Create Coupon</button>
+ </div>
+</div>
+
+<!-- AD MODAL -->
+<div class="modal" id="adModal">
+ <div class="modal-box">
+  <div class="modal-head">
+   <h2>Add Homepage Advertisement</h2>
+   <button class="close" onclick="closeModal('adModal')">×</button>
+  </div>
+  <div class="field"><label>Banner Title</label><input id="adTitle" placeholder="Big Summer Sale"></div>
+  <div class="field"><label>Banner Text</label><input id="adText" placeholder="Up to 50% OFF"></div>
+  <div class="field"><label>Image URL</label><input id="adImage" placeholder="https://..."></div>
+  <div class="field"><label>Button Link</label><input id="adLink" value="#products"></div>
+  <button class="btn gold" onclick="saveAd()">Add Advertisement</button>
+ </div>
+</div>
+
+<script>
+/* =========================
+   BOYSHUB ADMIN DATA
+========================= */
+
+let products = JSON.parse(localStorage.getItem("bh_products") || "[]");
+let orders = JSON.parse(localStorage.getItem("bh_orders") || "[]");
+let customers = JSON.parse(localStorage.getItem("bh_customers") || "[]");
+let discounts = JSON.parse(localStorage.getItem("bh_discounts") || "[]");
+let ads = JSON.parse(localStorage.getItem("bh_ads") || "[]");
+
+function saveAll(){
+ localStorage.setItem("bh_products",JSON.stringify(products));
+ localStorage.setItem("bh_orders",JSON.stringify(orders));
+ localStorage.setItem("bh_customers",JSON.stringify(customers));
+ localStorage.setItem("bh_discounts",JSON.stringify(discounts));
+ localStorage.setItem("bh_ads",JSON.stringify(ads));
+ updateDashboard();
+}
+
+function money(n){
+ return "₹"+Number(n||0).toLocaleString("en-IN");
+}
+
+function id(){
+ return Date.now().toString(36)+Math.random().toString(36).slice(2,7);
+}
+
+function showPage(page,btn){
+ document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));
+ document.getElementById(page).classList.add("active");
+
+ document.querySelectorAll(".nav").forEach(x=>x.classList.remove("active"));
+ if(btn)btn.classList.add("active");
+
+ if(page==="dashboard")updateDashboard();
+ if(page==="products")renderProducts();
+ if(page==="inventory")renderInventory();
+ if(page==="orders")renderOrders();
+ if(page==="customers")renderCustomers();
+ if(page==="discounts")renderDiscounts();
+ if(page==="ads")renderAds();
+
+ document.getElementById("sidebar").classList.remove("open");
+ window.scrollTo(0,0);
+}
+
+function toggleMenu(){
+ document.getElementById("sidebar").classList.toggle("open");
+}
+
+function toggleSwitch(el){
+ el.classList.toggle("on");
+}
+
+function openModal(id){
+ document.getElementById(id).classList.add("show");
+}
+function closeModal(id){
+ document.getElementById(id).classList.remove("show");
+}
+
+/* PRODUCTS */
+
+function openProductModal(product=null){
+ document.getElementById("productModalTitle").textContent=product?"Edit Product":"Add Product";
+
+ document.getElementById("editProductId").value=product?.id||"";
+ document.getElementById("pName").value=product?.name||"";
+ document.getElementById("pSku").value=product?.sku||"";
+ document.getElementById("pCategory").value=product?.category||"Men";
+ document.getElementById("pPrice").value=product?.price||"";
+ document.getElementById("pCompare").value=product?.compare||"";
+ document.getElementById("pStock").value=product?.stock??10;
+ document.getElementById("pSize").value=product?.size||"";
+ document.getElementById("pColor").value=product?.color||"";
+ document.getElementById("pImage").value=product?.image||"";
+ document.getElementById("pDescription").value=product?.description||"";
+
+ openModal("productModal");
+}
+
+function saveProduct(){
+ const name=document.getElementById("pName").value.trim();
+ const sku=document.getElementById("pSku").value.trim();
+ const price=Number(document.getElementById("pPrice").value);
+
+ if(!name||!sku||!price){
+  alert("Please enter Product Name, SKU and Price.");
+  return;
+ }
+
+ const product={
+  id:document.getElementById("editProductId").value||id(),
+  name,
+  sku,
+  category:document.getElementById("pCategory").value,
+  price,
+  compare:Number(document.getElementById("pCompare").value)||0,
+  stock:Number(document.getElementById("pStock").value)||0,
+  size:document.getElementById("pSize").value,
+  color:document.getElementById("pColor").value,
+  image:document.getElementById("pImage").value,
+  description:document.getElementById("pDescription").value,
+  created:new Date().toISOString()
+ };
+
+ const index=products.findIndex(p=>p.id===product.id);
+
+ if(index>=0)products[index]=product;
+ else products.push(product);
+
+ saveAll();
+ closeModal("productModal");
+ renderProducts();
+ renderInventory();
+ alert(index>=0?"Product updated successfully!":"Product added successfully!");
+}
+
+function editProduct(id){
+ const p=products.find(x=>x.id===id);
+ if(p)openProductModal(p);
+}
+
+function deleteProduct(id){
+ const p=products.find(x=>x.id===id);
+ if(!p)return;
+
+ if(confirm("Delete "+p.name+"?")){
+  products=products.filter(x=>x.id!==id);
+  saveAll();
+  renderProducts();
+  renderInventory();
+ }
+}
+
+function renderProducts(){
+ const tbody=document.getElementById("productTable");
+ if(!tbody)return;
+
+ const q=(document.getElementById("productSearch")?.value||"").toLowerCase();
+ const cat=document.getElementById("categoryFilter")?.value||"";
+
+ const list=products.filter(p=>
+  (!q || p.name.toLowerCase().includes(q)||p.sku.toLowerCase().includes(q)) &&
+  (!cat || p.category===cat)
+ );
+
+ if(!list.length){
+  tbody.innerHTML='<tr><td colspan="7" class="empty">No products found. Click + Add Product.</td></tr>';
+  return;
+ }
+
+ tbody.innerHTML=list.map(p=>`
+ <tr>
+  <td>
+   <div style="display:flex;align-items:center;gap:10px">
+    ${p.image?`<img class="product-img" src="${escapeHtml(p.image)}">`:`<div class="product-img"></div>`}
+    <b>${escapeHtml(p.name)}</b>
+   </div>
+  </td>
+  <td>${escapeHtml(p.sku)}</td>
+  <td>${escapeHtml(p.category)}</td>
+  <td>${money(p.price)}</td>
+  <td>${p.stock}</td>
+  <td>${p.stock<=0
+   ?'<span class="badge red">Out</span>'
+   :p.stock<=5
+   ?'<span class="badge yellow">Low</span>'
+   :'<span class="badge green">In Stock</span>'}</td>
+  <td>
+   <div class="actions">
+    <button class="action edit" onclick="editProduct('${p.id}')">Edit</button>
+    <button class="action delete" onclick="deleteProduct('${p.id}')">Delete</button>
+   </div>
+  </td>
+ </tr>`).join("");
+}
+
+/* INVENTORY */
+
+function renderInventory(){
+ const tbody=document.getElementById("inventoryTable");
+ if(!tbody)return;
+
+ const total=products.reduce((a,p)=>a+Number(p.stock||0),0);
+ const low=products.filter(p=>p.stock>0&&p.stock<=5).length;
+ const out=products.filter(p=>p.stock<=0).length;
+ const value=products.reduce((a,p)=>a+(Number(p.stock||0)*Number(p.price||0)),0);
+
+ document.getElementById("stockTotal").textContent=total;
+ document.getElementById("stockLow").textContent=low;
+ document.getElementById("stockOut").textContent=out;
+ document.getElementById("stockValue").textContent=money(value);
+
+ tbody.innerHTML=products.length?products.map(p=>`
+ <tr>
+  <td><b>${escapeHtml(p.name)}</b></td>
+  <td>${escapeHtml(p.sku)}</td>
+  <td><input type="number" value="${p.stock}" min="0"
+   style="width:90px;padding:7px;border:1px solid #ccc;border-radius:5px"
+   onchange="updateStock('${p.id}',this.value)"></td>
+  <td>${p.stock<=0
+   ?'<span class="badge red">Out of Stock</span>'
+   :p.stock<=5
+   ?'<span class="badge yellow">Low Stock</span>'
+   :'<span class="badge green">Healthy</span>'}</td>
+  <td><button class="action edit" onclick="editProduct('${p.id}')">Edit</button></td>
+ </tr>`).join("")
+ :'<tr><td colspan="5" class="empty">No products.</td></tr>';
+}
+
+function updateStock(id,value){
+ const p=products.find(x=>x.id===id);
+ if(p){
+  p.stock=Math.max(0,Number(value));
+  saveAll();
+  renderInventory();
+  renderProducts();
+ }
+}
+
+/* ORDERS */
+
+function renderOrders(){
+ const tbody=document.getElementById("orderTable");
+ if(!tbody)return;
+
+ const q=(document.getElementById("orderSearch")?.value||"").toLowerCase();
+ const status=document.getElementById("orderStatusFilter")?.value||"";
+
+ const list=orders.filter(o=>
+  (!q || o.id.toLowerCase().includes(q)||o.customer.toLowerCase().includes(q)) &&
+  (!status || o.status===status)
+ );
+
+ tbody.innerHTML=list.length?list.map(o=>`
+ <tr>
+  <td><b>#${escapeHtml(o.id)}</b></td>
+  <td>${escapeHtml(o.customer)}<br><small>${escapeHtml(o.phone||"")}</small></td>
+  <td>${money(o.amount)}</td>
+  <td>
+   ${escapeHtml(o.payment||"COD")}
+  </td>
+  <td>
+   <select onchange="changeOrderStatus('${o.id}',this.value)">
+    ${["Pending","Confirmed","Shipped","Delivered","Cancelled"].map(s=>
+     `<option ${o.status===s?"selected":""}>${s}</option>`).join("")}
+   </select>
+  </td>
+  <td>${o.date||""}</td>
+  <td><button class="action delete" onclick="deleteOrder('${o.id}')">Delete</button></td>
+ </tr>`).join("")
+ :'<tr><td colspan="7" class="empty">No orders found.</td></tr>';
+}
+
+function changeOrderStatus(id,status){
+ const o=orders.find(x=>x.id===id);
+ if(o){
+  o.status=status;
+  saveAll();
+  renderOrders();
+ }
+}
+
+function deleteOrder(id){
+ if(confirm("Delete this order?")){
+  orders=orders.filter(x=>x.id!==id);
+  saveAll();
+  renderOrders();
+ }
+}
+
+/* CUSTOMERS */
+
+function renderCustomers(){
+ const tbody=document.getElementById("customerTable");
+ if(!tbody)return;
+
+ const q=(document.getElementById("customerSearch")?.value||"").toLowerCase();
+
+ const list=customers.filter(c=>
+  !q ||
+  c.name.toLowerCase().includes(q) ||
+  (c.email||"").toLowerCase().includes(q) ||
+  (c.phone||"").includes(q)
+ );
+
+ tbody.innerHTML=list.length?list.map(c=>`
+ <tr>
+  <td><b>${escapeHtml(c.name)}</b></td>
+  <td>${escapeHtml(c.email||"-")}</td>
+  <td>${escapeHtml(c.phone||"-")}</td>
+  <td>${c.orders||0}</td>
+  <td>${money(c.spent||0)}</td>
+  <td><button class="action edit" onclick="viewCustomer('${c.id}')">View</button></td>
+ </tr>`).join("")
+ :'<tr><td colspan="6" class="empty">No customers found.</td></tr>';
+}
+
+function viewCustomer(id){
+ const c=customers.find(x=>x.id===id);
+ if(c)alert(
+  "Customer: "+c.name+
+  "\nEmail: "+(c.email||"-")+
+  "\nPhone: "+(c.phone||"-")+
+  "\nOrders: "+(c.orders||0)+
+  "\nTotal Spent: "+money(c.spent||0)
+ );
+}
+
+/* DISCOUNTS */
+
+function openDiscountModal(){
+ document.getElementById("dCode").value="";
+ document.getElementById("dValue").value="";
+ document.getElementById("dMin").value="0";
+ openModal("discountModal");
+}
+
+function saveDiscount(){
+ const code=document.getElementById("dCode").value.trim().toUpperCase();
+ const type=document.getElementById("dType").value;
+ const value=Number(document.getElementById("dValue").value);
+ const min=Number(document.getElementById("dMin").value)||0;
+
+ if(!code||!value){
+  alert("Enter coupon code and discount.");
+  return;
+ }
+
+ discounts.push({
+  id:id(),code,type,value,min,active:true
+ });
+
+ saveAll();
+ closeModal("discountModal");
+ renderDiscounts();
+ alert("Coupon created!");
+}
+
+function renderDiscounts(){
+ const tbody=document.getElementById("discountTable");
+ if(!tbody)return;
+
+ tbody.innerHTML=discounts.length?discounts.map(d=>`
+ <tr>
+  <td><b>${escapeHtml(d.code)}</b></td>
+  <td>${d.type}</td>
+  <td>${d.type==="Percentage"?d.value+"%":money(d.value)}</td>
+  <td>${money(d.min)}</td>
+  <td><span class="badge green">Active</span></td>
+  <td><button class="action delete" onclick="deleteDiscount('${d.id}')">Delete</button></td>
+ </tr>`).join("")
+ :'<tr><td colspan="6" class="empty">No coupons created.</td></tr>';
+}
+
+function deleteDiscount(id){
+ if(confirm("Delete coupon?")){
+  discounts=discounts.filter(x=>x.id!==id);
+  saveAll();
+  renderDiscounts();
+ }
+}
+
+/* ADS */
+
+function openAdModal(){
+ document.getElementById("adTitle").value="";
+ document.getElementById("adText").value="";
+ document.getElementById("adImage").value="";
+ document.getElementById("adLink").value="#products";
+ openModal("adModal");
+}
+
+function saveAd(){
+ const title=document.getElementById("adTitle").value.trim();
+ const text=document.getElementById("adText").value.trim();
+ const image=document.getElementById("adImage").value.trim();
+ const link=document.getElementById("adLink").value.trim();
+
+ if(!title){
+  alert("Enter banner title.");
+  return;
+ }
+
+ ads.push({id:id(),title,text,image,link,active:true});
+ saveAll();
+ closeModal("adModal");
+ renderAds();
+ alert("Advertisement added!");
+}
+
+function renderAds(){
+ const box=document.getElementById("adsList");
+ if(!box)return;
+
+ box.innerHTML=ads.length?ads.map(a=>`
+ <div class="panel">
+  <div style="display:flex;gap:18px;align-items:center;flex-wrap:wrap">
+   ${a.image?`<img src="${escapeHtml(a.image)}" style="width:180px;height:90px;object-fit:cover;border-radius:8px">`:""}
+   <div style="flex:1">
+    <h3>${escapeHtml(a.title)}</h3>
+    <p>${escapeHtml(a.text||"")}</p>
+    <br><span class="badge green">Active</span>
+   </div>
+   <button class="action delete" onclick="deleteAd('${a.id}')">Delete</button>
+  </div>
+ </div>`).join("")
+ :'<div class="panel empty">No advertisements yet. Click + Add Advertisement.</div>';
+}
+
+function deleteAd(id){
+ if(confirm("Delete this advertisement?")){
+  ads=ads.filter(x=>x.id!==id);
+  saveAll();
+  renderAds();
+ }
+}
+
+/* DASHBOARD */
+
+function updateDashboard(){
+ document.getElementById("totalProducts").textContent=products.length;
+ document.getElementById("totalOrders").textContent=orders.length;
+ document.getElementById("totalCustomers").textContent=customers.length;
+
+ const sales=orders
+  .filter(o=>o.status!=="Cancelled")
+  .reduce((a,o)=>a+Number(o.amount||0),0);
+
+ document.getElementById("totalSales").textContent=money(sales);
+
+ const recent=orders.slice(-5).reverse();
+ document.getElementById("recentOrders").innerHTML=recent.length
+ ?recent.map(o=>`
+  <div style="padding:10px 0;border-bottom:1px solid #eee">
+   <b>#${escapeHtml(o.id)}</b> — ${escapeHtml(o.customer)}
+   <span style="float:right">${money(o.amount)}</span>
+  </div>`).join("")
+ :'<div class="empty">No orders yet.</div>';
+
+ const low=products.filter(p=>p.stock<=5);
+
+ document.getElementById("lowStock").innerHTML=low.length
+ ?low.map(p=>`
+  <div style="padding:10px 0;border-bottom:1px solid #eee">
+   <b>${escapeHtml(p.name)}</b>
+   <span style="float:right">${p.stock} left</span>
+  </div>`).join("")
+ :'<div class="empty">No low-stock products.</div>';
+}
+
+/* EXPORT */
+
+function downloadCSV(filename,rows){
+ if(!rows.length){
+  alert("No data available.");
+  return;
+ }
+
+ const keys=Object.keys(rows[0]);
+ const csv=[
+  keys.join(","),
+  ...rows.map(row=>keys.map(k=>{
+   const v=row[k]??"";
+   return `"${String(v).replace(/"/g,'""')}"`;
+  }).join(","))
+ ].join("\n");
+
+ const blob=new Blob([csv],{type:"text/csv"});
+ const url=URL.createObjectURL(blob);
+ const a=document.createElement("a");
+ a.href=url;
+ a.download=filename;
+ a.click();
+ URL.revokeObjectURL(url);
+}
+
+function exportProducts(){
+ downloadCSV("boyshub-products.csv",products);
+}
+
+function exportOrders(){
+ downloadCSV("boyshub-orders.csv",orders);
+}
+
+function backupData(){
+ const data={
+  products,orders,customers,discounts,ads,
+  exportedAt:new Date().toISOString()
+ };
+
+ const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
+ const url=URL.createObjectURL(blob);
+ const a=document.createElement("a");
+ a.href=url;
+ a.download="boyshub-store-backup.json";
+ a.click();
+ URL.revokeObjectURL(url);
+}
+
+/* SETTINGS */
+
+function saveSettings(){
+ localStorage.setItem("bh_settings",JSON.stringify({
+  storeName:document.getElementById("storeName")?.value||"BoysHub",
+  codCharge:document.getElementById("codCharge")?.value||0
+ }));
+ alert("Settings saved!");
+}
+
+function saveHomepage(){
+ localStorage.setItem("bh_homepage",JSON.stringify({
+  title:document.getElementById("heroTitle").value,
+  subtitle:document.getElementById("heroSubtitle").value
+ }));
+ alert("Homepage settings saved!");
+}
+
+function clearStore(){
+ if(confirm("WARNING: This will delete demo products, orders, customers, coupons and ads. Continue?")){
+  localStorage.removeItem("bh_products");
+  localStorage.removeItem("bh_orders");
+  localStorage.removeItem("bh_customers");
+  localStorage.removeItem("bh_discounts");
+  localStorage.removeItem("bh_ads");
+
+  products=[];
+  orders=[];
+  customers=[];
+  discounts=[];
+  ads=[];
+
+  updateDashboard();
+  renderProducts();
+  renderInventory();
+  renderOrders();
+  renderCustomers();
+  renderDiscounts();
+  renderAds();
+
+  alert("Demo store data cleared.");
+ }
+}
+
+/* SECURITY HELPER */
+
+function escapeHtml(value){
+ return String(value??"")
+  .replaceAll("&","&amp;")
+  .replaceAll("<","&lt;")
+  .replaceAll(">","&gt;")
+  .replaceAll('"',"&quot;")
+  .replaceAll("'","&#039;");
+}
+
+/* START */
+
+updateDashboard();
+renderProducts();
+renderInventory();
+renderOrders();
+renderCustomers();
+renderDiscounts();
+renderAds();
+
+/*
+ NOTE:
+ This admin panel intentionally does NOT put a fake password
+ inside the HTML. A real secure admin login needs:
+ - authentication
+ - database
+ - server-side authorization
+ - protected API
+ - HTTPS
+*/
+
+</script>
+
+</body>
+  </html>
