@@ -1162,6 +1162,18 @@ renderAds();
 */
 
 </script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
+<script>
+const SUPABASE_URL = "https://nxhjpfsopibfpxeklpol.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_4Tcg_gXBpw2QTXUVNOAZCg__MXLKbRr";
+
+const supabaseClient = supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_PUBLISHABLE_KEY
+);
+
+console.log("BoysHub Supabase connected");
+</script>
 </body>
   </html>
