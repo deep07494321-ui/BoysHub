@@ -1,1 +1,101 @@
-<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>BOYSHUB Admin</title><style>body{font-family:Inter,Arial;background:#f5f5f5;margin:0;color:#111}.top{background:#111;color:#fff;padding:22px 5%;display:flex;justify-content:space-between}.wrap{max-width:1100px;margin:35px auto;padding:0 20px}.box{background:#fff;border-radius:16px;padding:24px;margin-bottom:20px;border:1px solid #eee}input,select{padding:12px;border:1px solid #ddd;border-radius:8px;width:100%;margin:7px 0 14px}button{padding:12px 18px;border:0;border-radius:8px;background:#111;color:#fff;font-weight:700;cursor:pointer}.danger{background:#b00020}.row{display:grid;grid-template-columns:repeat(2,1fr);gap:15px}.item{display:flex;justify-content:space-between;padding:15px 0;border-bottom:1px solid #eee}@media(max-width:650px){.row{grid-template-columns:1fr}}</style></head><body><div class="top"><b>BOYSHUB ADMIN</b><a style="color:#fff" href="index.html">Storefront →</a></div><main class="wrap"><div class="box"><h2>Dashboard</h2><p>Products: <b id="pc">0</b> · Orders: <b id="oc">0</b></p></div><div class="box"><h2>Add Product</h2><div class="row"><div><label>Name</label><input id="name" placeholder="Product name"></div><div><label>Price</label><input id="price" type="number" placeholder="499"></div></div><div class="row"><div><label>Category</label><select id="cat"><option>T-Shirts</option><option>Shirts</option><option>Bottomwear</option><option>Hoodies</option></select></div><div><label>Stock</label><input id="stock" type="number" placeholder="20"></div></div><button onclick="add()">Add Product</button></div><div class="box"><h2>Products</h2><div id="list"></div></div><div class="box"><h2>Orders</h2><div id="orders"></div></div></main><script>let products=JSON.parse(localStorage.getItem("boyshub_products")||"null")||[{id:1,name:"Essential Black T-Shirt",price:499,cat:"T-Shirts",stock:20},{id:2,name:"Oversized Street Tee",price:699,cat:"T-Shirts",stock:15}];let orders=JSON.parse(localStorage.getItem("boyshub_orders")||"[]");function save(){localStorage.setItem("boyshub_products",JSON.stringify(products));render()}function add(){let n=name.value.trim();if(!n)return alert("Enter product name");products.push({id:Date.now(),name:n,price:+price.value||0,cat:cat.value,stock:+stock.value||0});save();name.value="";price.value="";stock.value=""}function del(id){products=products.filter(x=>x.id!==id);save()}function render(){pc.textContent=products.length;oc.textContent=orders.length;list.innerHTML=products.map(p=>`<div class=item><span><b>${p.name}</b><br>₹${p.price} · ${p.cat} · Stock ${p.stock}</span><button class=danger onclick="del(${p.id})">Delete</button></div>`).join("")||"<p>No products</p>";orders.innerHTML=orders.map(o=>`<div class=item><span><b>Order #${o.id}</b><br>${o.customer||"Customer"} · ₹${o.total||0}</span><span>${o.status||"New"}</span></div>`).join("")||"<p>No orders yet</p>"}render();</script></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>BOYSHUB Admin Dashboard</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Inter,Arial,sans-serif;background:#f4f5f7;color:#151515}.top{background:#111;color:#fff;padding:18px 5%;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10}.brand{font-size:20px;font-weight:800;letter-spacing:1px}.top a{color:#fff;text-decoration:none}.wrap{max-width:1200px;margin:28px auto;padding:0 18px}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.card,.panel{background:#fff;border:1px solid #e8e8e8;border-radius:16px;padding:20px;box-shadow:0 5px 18px #00000008}.stat b{display:block;font-size:28px;margin-top:8px}.muted{color:#777;font-size:13px}.grid{display:grid;grid-template-columns:1fr 1.5fr;gap:18px;margin-top:18px}.panel h2{margin:0 0 18px}.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}label{font-size:13px;font-weight:700}input,select{width:100%;padding:11px 12px;border:1px solid #ddd;border-radius:9px;margin:6px 0 13px;background:#fff}button{border:0;border-radius:9px;padding:11px 15px;background:#111;color:#fff;font-weight:700;cursor:pointer}.secondary{background:#eee;color:#111}.danger{background:#b00020}.product,.order{display:flex;gap:14px;align-items:center;border-top:1px solid #eee;padding:14px 0}.product img{width:62px;height:62px;object-fit:cover;border-radius:10px;background:#eee}.info{flex:1}.actions{display:flex;gap:7px;flex-wrap:wrap}.badge{display:inline-block;padding:5px 9px;border-radius:999px;background:#eee;font-size:12px;font-weight:700}.search{margin-bottom:10px}.empty{color:#777;padding:15px 0}.modal{position:fixed;inset:0;background:#0008;display:none;align-items:center;justify-content:center;padding:18px;z-index:20}.modalbox{background:#fff;border-radius:16px;padding:22px;max-width:520px;width:100%;max-height:90vh;overflow:auto}.modalbox h2{margin-top:0}@media(max-width:800px){.stats{grid-template-columns:1fr 1fr}.grid{grid-template-columns:1fr}}@media(max-width:520px){.stats,.row{grid-template-columns:1fr}.product,.order{align-items:flex-start}.actions{margin-top:8px}}
+</style>
+</head>
+<body>
+<header class="top"><div class="brand">BOYSHUB ADMIN</div><a href="index.html">View Store →</a></header>
+<main class="wrap">
+<section class="stats">
+<div class="card stat"><span class="muted">Products</span><b id="pc">0</b></div>
+<div class="card stat"><span class="muted">Orders</span><b id="oc">0</b></div>
+<div class="card stat"><span class="muted">Customers</span><b id="cc">0</b></div>
+<div class="card stat"><span class="muted">Sales</span><b id="sales">₹0</b></div>
+</section>
+
+<section class="grid">
+<div class="panel">
+<h2 id="formTitle">Add Product</h2>
+<input type="hidden" id="editId">
+<label>Product Name</label><input id="name" placeholder="Example: Oversized Black T-Shirt">
+<div class="row">
+<div><label>Price (₹)</label><input id="price" type="number" placeholder="699"></div>
+<div><label>Discount (%)</label><input id="discount" type="number" min="0" max="100" placeholder="10"></div>
+</div>
+<div class="row">
+<div><label>Category</label><select id="cat"><option>T-Shirts</option><option>Shirts</option><option>Bottomwear</option><option>Hoodies</option></select></div>
+<div><label>Stock</label><input id="stock" type="number" min="0" placeholder="20"></div>
+</div>
+<label>Product Image URL</label><input id="image" placeholder="https://...">
+<div class="actions"><button onclick="saveProduct()">Save Product</button><button class="secondary" onclick="resetForm()">Clear</button></div>
+<p class="muted">Demo data is saved in this browser. Real shared database will be connected after Supabase setup.</p>
+</div>
+
+<div class="panel">
+<h2>Products</h2>
+<input class="search" id="productSearch" placeholder="Search products..." oninput="render()">
+<div id="list"></div>
+</div>
+</section>
+
+<section class="panel" style="margin-top:18px">
+<h2>Orders</h2>
+<input class="search" id="orderSearch" placeholder="Search order/customer..." oninput="render()">
+<div id="orders"></div>
+</section>
+</main>
+
+<div class="modal" id="orderModal"><div class="modalbox"><h2>Order Details</h2><div id="orderDetails"></div><button onclick="closeOrder()">Close</button></div></div>
+
+<script>
+const defaultProducts=[
+{id:1,name:"Essential Black T-Shirt",price:499,discount:0,cat:"T-Shirts",stock:20,image:""},
+{id:2,name:"Oversized Street Tee",price:699,discount:0,cat:"T-Shirts",stock:15,image:""}
+];
+let products=JSON.parse(localStorage.getItem("boyshub_products")||"null")||defaultProducts;
+let orders=JSON.parse(localStorage.getItem("boyshub_orders")||"[]");
+
+function saveAll(){localStorage.setItem("boyshub_products",JSON.stringify(products));localStorage.setItem("boyshub_orders",JSON.stringify(orders));render()}
+function salePrice(p){return Math.round(p.price*(1-(Number(p.discount)||0)/100))}
+function saveProduct(){
+ const id=Number(document.getElementById("editId").value);
+ const item={id:id||Date.now(),name:document.getElementById("name").value.trim(),price:Number(document.getElementById("price").value)||0,discount:Number(document.getElementById("discount").value)||0,cat:document.getElementById("cat").value,stock:Number(document.getElementById("stock").value)||0,image:document.getElementById("image").value.trim()};
+ if(!item.name)return alert("Please enter product name");
+ if(id){products=products.map(p=>p.id===id?item:p)}else products.push(item);
+ saveAll();resetForm();
+}
+function editProduct(id){
+ const p=products.find(x=>x.id===id);if(!p)return;
+ editId.value=p.id;name.value=p.name;price.value=p.price;discount.value=p.discount||0;cat.value=p.cat;stock.value=p.stock;image.value=p.image||"";
+ formTitle.textContent="Edit Product";window.scrollTo({top:0,behavior:"smooth"});
+}
+function deleteProduct(id){if(confirm("Delete this product?")){products=products.filter(p=>p.id!==id);saveAll()}}
+function resetForm(){editId.value="";name.value="";price.value="";discount.value="";stock.value="";image.value="";formTitle.textContent="Add Product"}
+function setStatus(id,status){orders=orders.map(o=>o.id===id?{...o,status}:o);saveAll()}
+function showOrder(id){
+ const o=orders.find(x=>x.id===id);if(!o)return;
+ orderDetails.innerHTML='<p><b>Order #'+o.id+'</b></p><p>Customer: '+(o.customer||"Customer")+'</p><p>Phone: '+(o.phone||"-")+'</p><p>Address: '+(o.address||"-")+'</p><p>Total: ₹'+(o.total||0)+'</p><p>Status: '+(o.status||"New")+'</p>';
+ orderModal.style.display="flex";
+}
+function closeOrder(){orderModal.style.display="none"}
+function render(){
+ const ps=(productSearch.value||"").toLowerCase();
+ const os=(orderSearch.value||"").toLowerCase();
+ const filtered=products.filter(p=>(p.name+" "+p.cat).toLowerCase().includes(ps));
+ pc.textContent=products.length;oc.textContent=orders.length;
+ const customers=new Set(orders.map(o=>o.phone||o.customer).filter(Boolean));cc.textContent=customers.size;
+ sales.textContent="₹"+orders.reduce((s,o)=>s+(Number(o.total)||0),0);
+ list.innerHTML=filtered.map(p=>'<div class="product">'+(p.image?'<img src="'+p.image+'" onerror="this.style.display=\'none\'">':'<div style="width:62px;height:62px;border-radius:10px;background:#eee"></div>')+'<div class="info"><b>'+p.name+'</b><br><span class="muted">'+p.cat+' · Stock '+p.stock+'</span><br><b>₹'+salePrice(p)+'</b> '+(p.discount?'<span class="muted"><s>₹'+p.price+'</s> · '+p.discount+'% off</span>':'')+'</div><div class="actions"><button onclick="editProduct('+p.id+')">Edit</button><button class="danger" onclick="deleteProduct('+p.id+')">Delete</button></div></div>').join("")||'<div class="empty">No products found.</div>';
+ const fo=orders.filter(o=>(JSON.stringify(o)).toLowerCase().includes(os));
+ ordersEl=document.getElementById("orders");
+ ordersEl.innerHTML=fo.map(o=>'<div class="order"><div class="info"><b>Order #'+o.id+'</b><br><span class="muted">'+(o.customer||"Customer")+' · ₹'+(o.total||0)+'</span></div><select onchange="setStatus('+o.id+',this.value)"><option '+((o.status||"New")=="New"?"selected":"")+'>New</option><option '+(o.status=="Confirmed"?"selected":"")+'>Confirmed</option><option '+(o.status=="Shipped"?"selected":"")+'>Shipped</option><option '+(o.status=="Delivered"?"selected":"")+'>Delivered</option><option '+(o.status=="Cancelled"?"selected":"")+'>Cancelled</option></select><button class="secondary" onclick="showOrder('+o.id+')">View</button></div>').join("")||'<div class="empty">No orders yet.</div>';
+}
+render();
+</script>
+</body>
+</html>
