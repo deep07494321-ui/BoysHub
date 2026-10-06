@@ -1,101 +1,95 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>BOYSHUB Admin Dashboard</title>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>BOYSHUB — Admin</title>
 <style>
-*{box-sizing:border-box}body{margin:0;font-family:Inter,Arial,sans-serif;background:#f4f5f7;color:#151515}.top{background:#111;color:#fff;padding:18px 5%;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10}.brand{font-size:20px;font-weight:800;letter-spacing:1px}.top a{color:#fff;text-decoration:none}.wrap{max-width:1200px;margin:28px auto;padding:0 18px}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.card,.panel{background:#fff;border:1px solid #e8e8e8;border-radius:16px;padding:20px;box-shadow:0 5px 18px #00000008}.stat b{display:block;font-size:28px;margin-top:8px}.muted{color:#777;font-size:13px}.grid{display:grid;grid-template-columns:1fr 1.5fr;gap:18px;margin-top:18px}.panel h2{margin:0 0 18px}.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}label{font-size:13px;font-weight:700}input,select{width:100%;padding:11px 12px;border:1px solid #ddd;border-radius:9px;margin:6px 0 13px;background:#fff}button{border:0;border-radius:9px;padding:11px 15px;background:#111;color:#fff;font-weight:700;cursor:pointer}.secondary{background:#eee;color:#111}.danger{background:#b00020}.product,.order{display:flex;gap:14px;align-items:center;border-top:1px solid #eee;padding:14px 0}.product img{width:62px;height:62px;object-fit:cover;border-radius:10px;background:#eee}.info{flex:1}.actions{display:flex;gap:7px;flex-wrap:wrap}.badge{display:inline-block;padding:5px 9px;border-radius:999px;background:#eee;font-size:12px;font-weight:700}.search{margin-bottom:10px}.empty{color:#777;padding:15px 0}.modal{position:fixed;inset:0;background:#0008;display:none;align-items:center;justify-content:center;padding:18px;z-index:20}.modalbox{background:#fff;border-radius:16px;padding:22px;max-width:520px;width:100%;max-height:90vh;overflow:auto}.modalbox h2{margin-top:0}@media(max-width:800px){.stats{grid-template-columns:1fr 1fr}.grid{grid-template-columns:1fr}}@media(max-width:520px){.stats,.row{grid-template-columns:1fr}.product,.order{align-items:flex-start}.actions{margin-top:8px}}
+:root{--ink:#111;--bg:#f5f6f8;--card:#fff;--line:#e7e7e9;--muted:#70757d;--green:#16834b;--red:#c62828}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:Arial,Helvetica,sans-serif}.hidden{display:none!important}
+button,input,select,textarea{font:inherit}button{border:0;border-radius:10px;padding:10px 14px;background:#111;color:#fff;font-weight:700;cursor:pointer}button:hover{opacity:.9}.btn-light{background:#eee;color:#111}.btn-danger{background:#c62828}.btn-green{background:#16834b}
+.login{min-height:100vh;display:grid;place-items:center;padding:20px}.loginbox{width:min(420px,100%);background:#fff;padding:32px;border-radius:22px;box-shadow:0 15px 50px #0001}.logo{font-weight:900;letter-spacing:2px;font-size:25px}.loginbox h1{margin:8px 0 6px}.hint{font-size:12px;color:#777;line-height:1.5}
+label{display:block;font-size:13px;font-weight:700;margin:13px 0 6px}input,select,textarea{width:100%;border:1px solid #dcdde1;border-radius:10px;padding:11px 12px;background:#fff;outline:none}input:focus,select:focus,textarea:focus{border-color:#111}
+.app{min-height:100vh}.top{height:64px;background:#111;color:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 24px;position:sticky;top:0;z-index:20}.top .logo{font-size:19px}.top-actions{display:flex;gap:8px}
+.layout{display:grid;grid-template-columns:230px 1fr;min-height:calc(100vh - 64px)}aside{background:#fff;border-right:1px solid var(--line);padding:18px 12px}.nav{width:100%;text-align:left;background:transparent;color:#333;margin:3px 0}.nav.active{background:#111;color:#fff}.main{padding:24px;max-width:1400px;width:100%;margin:auto}.section{display:none}.section.active{display:block}.title{display:flex;justify-content:space-between;gap:15px;align-items:center;margin-bottom:18px}.title h1{margin:0;font-size:27px}.muted{color:var(--muted);font-size:13px}.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.card,.panel{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px}.metric{font-size:28px;font-weight:800;margin-top:8px}.grid2{display:grid;grid-template-columns:1fr 1.7fr;gap:16px;margin-top:16px}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}.toolbar input{max-width:340px}.tablewrap{overflow:auto}.table{width:100%;border-collapse:collapse;min-width:760px}.table th,.table td{text-align:left;padding:12px;border-bottom:1px solid var(--line);font-size:13px;vertical-align:middle}.table th{color:#666;font-size:12px;text-transform:uppercase}.thumb{width:48px;height:48px;border-radius:9px;object-fit:cover;background:#eee}.actions{display:flex;gap:6px;flex-wrap:wrap}.badge{display:inline-block;padding:5px 9px;border-radius:999px;background:#eee;font-size:11px;font-weight:700}.green{background:#e5f5ec;color:#146c40}.red{background:#fde9e9;color:#a11}.orange{background:#fff0dc;color:#8a4e00}.low{color:#c62828;font-weight:700}.empty{text-align:center;padding:30px;color:#777}.toast{position:fixed;right:20px;bottom:20px;background:#111;color:#fff;padding:12px 16px;border-radius:10px;display:none;z-index:50}
+.modal{position:fixed;inset:0;background:#0008;display:none;align-items:center;justify-content:center;padding:18px;z-index:40}.modal.show{display:flex}.modalbox{width:min(650px,100%);max-height:90vh;overflow:auto;background:#fff;border-radius:18px;padding:22px}.modalhead{display:flex;justify-content:space-between;align-items:center}.modalhead h2{margin:0}.order-items{border-top:1px solid var(--line);margin-top:15px;padding-top:10px}
+@media(max-width:900px){.layout{grid-template-columns:1fr}aside{border-right:0;border-bottom:1px solid var(--line);display:flex;overflow:auto;gap:5px;padding:8px}.nav{white-space:nowrap;width:auto}.cards{grid-template-columns:1fr 1fr}.grid2{grid-template-columns:1fr}}
+@media(max-width:600px){.top{padding:0 14px}.main{padding:14px}.cards,.formgrid,.grid3{grid-template-columns:1fr}.title h1{font-size:22px}.top-actions .store{display:none}}
 </style>
 </head>
 <body>
-<header class="top"><div class="brand">BOYSHUB ADMIN</div><a href="index.html">View Store →</a></header>
-<main class="wrap">
-<section class="stats">
-<div class="card stat"><span class="muted">Products</span><b id="pc">0</b></div>
-<div class="card stat"><span class="muted">Orders</span><b id="oc">0</b></div>
-<div class="card stat"><span class="muted">Customers</span><b id="cc">0</b></div>
-<div class="card stat"><span class="muted">Sales</span><b id="sales">₹0</b></div>
-</section>
+<div id="login" class="login">
+<div class="loginbox"><div class="logo">BOYSHUB</div><h1>Admin Panel</h1><p class="muted">Sign in to manage your store.</p>
+<label>Username</label><input id="loginUser" autocomplete="username" placeholder="admin">
+<label>Password</label><input id="loginPass" type="password" autocomplete="current-password" placeholder="admin123">
+<button style="width:100%;margin-top:12px" onclick="login()">Login</button>
+<p class="hint">Demo login for the current static site: <b>admin</b> / <b>admin123</b>.<br>For production security, connect Supabase Auth.</p></div></div>
 
-<section class="grid">
-<div class="panel">
-<h2 id="formTitle">Add Product</h2>
-<input type="hidden" id="editId">
-<label>Product Name</label><input id="name" placeholder="Example: Oversized Black T-Shirt">
-<div class="row">
-<div><label>Price (₹)</label><input id="price" type="number" placeholder="699"></div>
-<div><label>Discount (%)</label><input id="discount" type="number" min="0" max="100" placeholder="10"></div>
-</div>
-<div class="row">
-<div><label>Category</label><select id="cat"><option>T-Shirts</option><option>Shirts</option><option>Bottomwear</option><option>Hoodies</option></select></div>
-<div><label>Stock</label><input id="stock" type="number" min="0" placeholder="20"></div>
-</div>
-<label>Product Image URL</label><input id="image" placeholder="https://...">
-<div class="actions"><button onclick="saveProduct()">Save Product</button><button class="secondary" onclick="resetForm()">Clear</button></div>
-<p class="muted">Demo data is saved in this browser. Real shared database will be connected after Supabase setup.</p>
-</div>
+<div id="app" class="app hidden">
+<header class="top"><div class="logo">BOYSHUB ADMIN</div><div class="top-actions"><a class="store" href="index.html" style="color:#fff;text-decoration:none;padding:10px">View Store</a><button class="btn-light" onclick="logout()">Logout</button></div></header>
+<div class="layout">
+<aside>
+<button class="nav active" data-tab="dashboard">📊 Dashboard</button>
+<button class="nav" data-tab="products">📦 Products</button>
+<button class="nav" data-tab="orders">🧾 Orders</button>
+<button class="nav" data-tab="customers">👥 Customers</button>
+<button class="nav" data-tab="stock">📋 Stock</button>
+<button class="nav" data-tab="settings">⚙️ Settings</button>
+</aside>
+<main class="main">
+<section id="dashboard" class="section active"><div class="title"><div><h1>Dashboard</h1><span class="muted">Store overview</span></div><button onclick="showTab('products');newProduct()">+ Add Product</button></div>
+<div class="cards"><div class="card"><span class="muted">Products</span><div id="mProducts" class="metric">0</div></div><div class="card"><span class="muted">Orders</span><div id="mOrders" class="metric">0</div></div><div class="card"><span class="muted">Customers</span><div id="mCustomers" class="metric">0</div></div><div class="card"><span class="muted">Sales</span><div id="mSales" class="metric">₹0</div></div></div>
+<div class="grid2"><div class="panel"><h3>Stock Alert</h3><div id="stockAlert"></div></div><div class="panel"><h3>Recent Orders</h3><div id="recentOrders"></div></div></div></section>
 
-<div class="panel">
-<h2>Products</h2>
-<input class="search" id="productSearch" placeholder="Search products..." oninput="render()">
-<div id="list"></div>
-</div>
-</section>
+<section id="products" class="section"><div class="title"><div><h1>Products</h1><span class="muted">Add, edit and manage your catalogue</span></div><button onclick="newProduct()">+ Add Product</button></div>
+<div class="panel"><div class="toolbar"><input id="pSearch" placeholder="Search product..." oninput="renderProducts()"><select id="pCat" onchange="renderProducts()"><option value="">All Categories</option><option>T-Shirts</option><option>Shirts</option><option>Bottomwear</option><option>Hoodies</option></select></div><div class="tablewrap"><table class="table"><thead><tr><th>Product</th><th>Category</th><th>Price</th><th>Discount</th><th>Stock</th><th>Actions</th></tr></thead><tbody id="productRows"></tbody></table></div></div></section>
 
-<section class="panel" style="margin-top:18px">
-<h2>Orders</h2>
-<input class="search" id="orderSearch" placeholder="Search order/customer..." oninput="render()">
-<div id="orders"></div>
-</section>
-</main>
+<section id="orders" class="section"><div class="title"><div><h1>Orders</h1><span class="muted">Track and update customer orders</span></div></div><div class="panel"><div class="toolbar"><input id="oSearch" placeholder="Search order/customer..." oninput="renderOrders()"><select id="oStatus" onchange="renderOrders()"><option value="">All Status</option><option>New</option><option>Confirmed</option><option>Shipped</option><option>Delivered</option><option>Cancelled</option></select></div><div class="tablewrap"><table class="table"><thead><tr><th>Order</th><th>Customer</th><th>Total</th><th>Status</th><th>Action</th></tr></thead><tbody id="orderRows"></tbody></table></div></div></section>
 
-<div class="modal" id="orderModal"><div class="modalbox"><h2>Order Details</h2><div id="orderDetails"></div><button onclick="closeOrder()">Close</button></div></div>
+<section id="customers" class="section"><div class="title"><div><h1>Customers</h1><span class="muted">Customer information from orders</span></div></div><div class="panel"><div class="tablewrap"><table class="table"><thead><tr><th>Customer</th><th>Phone</th><th>Orders</th><th>Total Spent</th></tr></thead><tbody id="customerRows"></tbody></table></div></div></section>
+
+<section id="stock" class="section"><div class="title"><div><h1>Stock</h1><span class="muted">Monitor inventory levels</span></div></div><div class="panel"><div class="tablewrap"><table class="table"><thead><tr><th>Product</th><th>Category</th><th>Stock</th><th>Value</th><th>Action</th></tr></thead><tbody id="stockRows"></tbody></table></div></div></section>
+
+<section id="settings" class="section"><div class="title"><div><h1>Settings</h1><span class="muted">Admin panel settings</span></div></div><div class="grid3"><div class="panel"><h3>Demo Login</h3><p class="muted">Username: admin<br>Password: admin123</p></div><div class="panel"><h3>Data</h3><p class="muted">This version stores products and orders in browser localStorage.</p><button class="btn-danger" onclick="clearDemo()">Clear Demo Data</button></div><div class="panel"><h3>Production</h3><p class="muted">Supabase should be connected for shared database, secure authentication, real orders and stock.</p></div></div></section>
+</main></div></div>
+
+<div id="productModal" class="modal"><div class="modalbox"><div class="modalhead"><h2 id="productModalTitle">Add Product</h2><button class="btn-light" onclick="closeModal('productModal')">✕</button></div>
+<div class="formgrid"><div><label>Product Name</label><input id="fName"></div><div><label>Category</label><select id="fCat"><option>T-Shirts</option><option>Shirts</option><option>Bottomwear</option><option>Hoodies</option></select></div><div><label>Price (₹)</label><input id="fPrice" type="number" min="0"></div><div><label>Discount (%)</label><input id="fDiscount" type="number" min="0" max="100"></div><div><label>Stock</label><input id="fStock" type="number" min="0"></div><div><label>Image URL</label><input id="fImage" placeholder="https://..."></div></div><label>Description</label><textarea id="fDesc" rows="4" placeholder="Product description"></textarea><div class="actions" style="margin-top:16px"><button onclick="saveProduct()">Save Product</button><button class="btn-light" onclick="closeModal('productModal')">Cancel</button></div></div></div>
+
+<div id="orderModal" class="modal"><div class="modalbox"><div class="modalhead"><h2>Order Details</h2><button class="btn-light" onclick="closeModal('orderModal')">✕</button></div><div id="orderDetail"></div></div></div>
+<div id="toast" class="toast"></div>
 
 <script>
-const defaultProducts=[
-{id:1,name:"Essential Black T-Shirt",price:499,discount:0,cat:"T-Shirts",stock:20,image:""},
-{id:2,name:"Oversized Street Tee",price:699,discount:0,cat:"T-Shirts",stock:15,image:""}
-];
-let products=JSON.parse(localStorage.getItem("boyshub_products")||"null")||defaultProducts;
-let orders=JSON.parse(localStorage.getItem("boyshub_orders")||"[]");
-
-function saveAll(){localStorage.setItem("boyshub_products",JSON.stringify(products));localStorage.setItem("boyshub_orders",JSON.stringify(orders));render()}
-function salePrice(p){return Math.round(p.price*(1-(Number(p.discount)||0)/100))}
-function saveProduct(){
- const id=Number(document.getElementById("editId").value);
- const item={id:id||Date.now(),name:document.getElementById("name").value.trim(),price:Number(document.getElementById("price").value)||0,discount:Number(document.getElementById("discount").value)||0,cat:document.getElementById("cat").value,stock:Number(document.getElementById("stock").value)||0,image:document.getElementById("image").value.trim()};
- if(!item.name)return alert("Please enter product name");
- if(id){products=products.map(p=>p.id===id?item:p)}else products.push(item);
- saveAll();resetForm();
-}
-function editProduct(id){
- const p=products.find(x=>x.id===id);if(!p)return;
- editId.value=p.id;name.value=p.name;price.value=p.price;discount.value=p.discount||0;cat.value=p.cat;stock.value=p.stock;image.value=p.image||"";
- formTitle.textContent="Edit Product";window.scrollTo({top:0,behavior:"smooth"});
-}
-function deleteProduct(id){if(confirm("Delete this product?")){products=products.filter(p=>p.id!==id);saveAll()}}
-function resetForm(){editId.value="";name.value="";price.value="";discount.value="";stock.value="";image.value="";formTitle.textContent="Add Product"}
-function setStatus(id,status){orders=orders.map(o=>o.id===id?{...o,status}:o);saveAll()}
-function showOrder(id){
- const o=orders.find(x=>x.id===id);if(!o)return;
- orderDetails.innerHTML='<p><b>Order #'+o.id+'</b></p><p>Customer: '+(o.customer||"Customer")+'</p><p>Phone: '+(o.phone||"-")+'</p><p>Address: '+(o.address||"-")+'</p><p>Total: ₹'+(o.total||0)+'</p><p>Status: '+(o.status||"New")+'</p>';
- orderModal.style.display="flex";
-}
-function closeOrder(){orderModal.style.display="none"}
-function render(){
- const ps=(productSearch.value||"").toLowerCase();
- const os=(orderSearch.value||"").toLowerCase();
- const filtered=products.filter(p=>(p.name+" "+p.cat).toLowerCase().includes(ps));
- pc.textContent=products.length;oc.textContent=orders.length;
- const customers=new Set(orders.map(o=>o.phone||o.customer).filter(Boolean));cc.textContent=customers.size;
- sales.textContent="₹"+orders.reduce((s,o)=>s+(Number(o.total)||0),0);
- list.innerHTML=filtered.map(p=>'<div class="product">'+(p.image?'<img src="'+p.image+'" onerror="this.style.display=\'none\'">':'<div style="width:62px;height:62px;border-radius:10px;background:#eee"></div>')+'<div class="info"><b>'+p.name+'</b><br><span class="muted">'+p.cat+' · Stock '+p.stock+'</span><br><b>₹'+salePrice(p)+'</b> '+(p.discount?'<span class="muted"><s>₹'+p.price+'</s> · '+p.discount+'% off</span>':'')+'</div><div class="actions"><button onclick="editProduct('+p.id+')">Edit</button><button class="danger" onclick="deleteProduct('+p.id+')">Delete</button></div></div>').join("")||'<div class="empty">No products found.</div>';
- const fo=orders.filter(o=>(JSON.stringify(o)).toLowerCase().includes(os));
- ordersEl=document.getElementById("orders");
- ordersEl.innerHTML=fo.map(o=>'<div class="order"><div class="info"><b>Order #'+o.id+'</b><br><span class="muted">'+(o.customer||"Customer")+' · ₹'+(o.total||0)+'</span></div><select onchange="setStatus('+o.id+',this.value)"><option '+((o.status||"New")=="New"?"selected":"")+'>New</option><option '+(o.status=="Confirmed"?"selected":"")+'>Confirmed</option><option '+(o.status=="Shipped"?"selected":"")+'>Shipped</option><option '+(o.status=="Delivered"?"selected":"")+'>Delivered</option><option '+(o.status=="Cancelled"?"selected":"")+'>Cancelled</option></select><button class="secondary" onclick="showOrder('+o.id+')">View</button></div>').join("")||'<div class="empty">No orders yet.</div>';
-}
-render();
+const KEY_P="boyshub_products",KEY_O="boyshub_orders";
+const defaults=[{id:1,name:"Essential Black T-Shirt",price:499,discount:0,cat:"T-Shirts",stock:20,image:"",description:"Classic everyday T-shirt."},{id:2,name:"Oversized Street Tee",price:699,discount:0,cat:"T-Shirts",stock:15,image:"",description:"Relaxed oversized fit."}];
+let products=load(KEY_P,null); if(!products){products=defaults;save(KEY_P,products)}
+let orders=load(KEY_O,[])||[];let editingId=null;
+function load(k,f){try{return JSON.parse(localStorage.getItem(k))??f}catch(e){return f}}
+function save(k,v){localStorage.setItem(k,JSON.stringify(v))}
+function money(n){return "₹"+Number(n||0).toLocaleString("en-IN")}
+function finalPrice(p){return Math.round(Number(p.price||0)*(1-Number(p.discount||0)/100))}
+function esc(v){return String(v??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[m]))}
+function toast(t){const x=document.getElementById("toast");x.textContent=t;x.style.display="block";setTimeout(()=>x.style.display="none",1800)}
+function login(){if(loginUser.value==="admin"&&loginPass.value==="admin123"){sessionStorage.setItem("bh_admin","1");openApp()}else alert("Wrong username or password")}
+function logout(){sessionStorage.removeItem("bh_admin");location.reload()}
+function openApp(){login.classList.add("hidden");app.classList.remove("hidden");renderAll()}
+function showTab(tab){document.querySelectorAll(".section").forEach(x=>x.classList.toggle("active",x.id===tab));document.querySelectorAll(".nav").forEach(x=>x.classList.toggle("active",x.dataset.tab===tab));renderAll()}
+document.querySelectorAll(".nav").forEach(b=>b.onclick=()=>showTab(b.dataset.tab));
+function newProduct(){editingId=null;productModalTitle.textContent="Add Product";["fName","fPrice","fDiscount","fStock","fImage","fDesc"].forEach(id=>document.getElementById(id).value="");fCat.value="T-Shirts";productModal.classList.add("show")}
+function editProduct(id){const p=products.find(x=>x.id==id);if(!p)return;editingId=id;productModalTitle.textContent="Edit Product";fName.value=p.name;fCat.value=p.cat;fPrice.value=p.price;fDiscount.value=p.discount||0;fStock.value=p.stock;fImage.value=p.image||"";fDesc.value=p.description||"";productModal.classList.add("show")}
+function saveProduct(){const p={id:editingId||Date.now(),name:fName.value.trim(),cat:fCat.value,price:Number(fPrice.value)||0,discount:Number(fDiscount.value)||0,stock:Number(fStock.value)||0,image:fImage.value.trim(),description:fDesc.value.trim()};if(!p.name)return alert("Product name is required");if(p.discount>100)p.discount=100;if(editingId)products=products.map(x=>x.id==editingId?p:x);else products.unshift(p);save(KEY_P,products);closeModal("productModal");renderAll();toast("Product saved")}
+function deleteProduct(id){if(confirm("Delete this product?")){products=products.filter(x=>x.id!=id);save(KEY_P,products);renderAll();toast("Product deleted")}}
+function renderProducts(){const q=(pSearch.value||"").toLowerCase(),c=pCat.value;const a=products.filter(p=>(!c||p.cat===c)&&(p.name+" "+p.cat).toLowerCase().includes(q));productRows.innerHTML=a.map(p=>'<tr><td><div style="display:flex;gap:10px;align-items:center">'+(p.image?'<img class="thumb" src="'+esc(p.image)+'">':'<div class="thumb"></div>')+'<div><b>'+esc(p.name)+'</b><br><span class="muted">'+esc(p.description||"")+'</span></div></div></td><td>'+esc(p.cat)+'</td><td><b>'+money(finalPrice(p))+'</b>'+(p.discount?'<br><span class="muted"><s>'+money(p.price)+'</s></span>':"")+'</td><td>'+Number(p.discount||0)+'%</td><td class="'+(p.stock<5?"low":"")+'">'+p.stock+'</td><td><div class="actions"><button onclick="editProduct('+p.id+')">Edit</button><button class="btn-danger" onclick="deleteProduct('+p.id+')">Delete</button></div></td></tr>').join("")||'<tr><td colspan="6" class="empty">No products found.</td></tr>'}
+function statusClass(s){return s==="Delivered"?"green":s==="Cancelled"?"red":s==="Shipped"?"orange":""}
+function renderOrders(){const q=(oSearch.value||"").toLowerCase(),s=oStatus.value;a=orders.filter(o=>(!s||(o.status||"New")===s)&&JSON.stringify(o).toLowerCase().includes(q));orderRows.innerHTML=a.map(o=>'<tr><td><b>#'+esc(o.id)+'</b><br><span class="muted">'+esc(o.date||"")+'</span></td><td>'+esc(o.customer||"Customer")+'<br><span class="muted">'+esc(o.phone||"")+'</span></td><td><b>'+money(o.total)+'</b></td><td><select onchange="setStatus('+o.id+',this.value)"><option '+((o.status||"New")==="New"?"selected":"")+'>New</option><option '+(o.status==="Confirmed"?"selected":"")+'>Confirmed</option><option '+(o.status==="Shipped"?"selected":"")+'>Shipped</option><option '+(o.status==="Delivered"?"selected":"")+'>Delivered</option><option '+(o.status==="Cancelled"?"selected":"")+'>Cancelled</option></select></td><td><button class="btn-light" onclick="viewOrder('+o.id+')">View</button></td></tr>').join("")||'<tr><td colspan="5" class="empty">No orders found.</td></tr>'}
+function setStatus(id,s){orders=orders.map(o=>o.id==id?{...o,status:s}:o);save(KEY_O,orders);renderAll();toast("Order status updated")}
+function viewOrder(id){const o=orders.find(x=>x.id==id);if(!o)return;let items=o.items||o.products||[];orderDetail.innerHTML='<p><b>Order #'+esc(o.id)+'</b></p><p><b>Customer:</b> '+esc(o.customer||"-")+'<br><b>Phone:</b> '+esc(o.phone||"-")+'<br><b>Address:</b> '+esc(o.address||"-")+'</p><p><b>Status:</b> '+esc(o.status||"New")+'<br><b>Total:</b> '+money(o.total)+'</p><div class="order-items"><b>Items</b>'+ (Array.isArray(items)&&items.length?items.map(i=>'<p>'+esc(i.name||i.title||"Product")+' × '+esc(i.quantity||i.qty||1)+' — '+money(i.price||0)+'</p>').join(""):"<p class='muted'>Item details not stored in this order.</p>")+'</div>';orderModal.classList.add("show")}
+function customers(){const m={};orders.forEach(o=>{const k=o.phone||o.customer||"Unknown";if(!m[k])m[k]={name:o.customer||"Customer",phone:o.phone||"-",count:0,total:0};m[k].count++;m[k].total+=Number(o.total)||0});return Object.values(m)}
+function renderCustomers(){customerRows.innerHTML=customers().map(c=>'<tr><td><b>'+esc(c.name)+'</b></td><td>'+esc(c.phone)+'</td><td>'+c.count+'</td><td>'+money(c.total)+'</td></tr>').join("")||'<tr><td colspan="4" class="empty">No customers yet.</td></tr>'}
+function renderStock(){stockRows.innerHTML=products.map(p=>'<tr><td><b>'+esc(p.name)+'</b></td><td>'+esc(p.cat)+'</td><td class="'+(p.stock<5?"low":"")+'">'+p.stock+'</td><td>'+money(finalPrice(p)*p.stock)+'</td><td><button onclick="editProduct('+p.id+')">Update</button></td></tr>').join("")}
+function renderDashboard(){mProducts.textContent=products.length;mOrders.textContent=orders.length;mCustomers.textContent=customers().length;mSales.textContent=money(orders.reduce((s,o)=>s+(Number(o.total)||0),0));const low=products.filter(p=>p.stock<5);stockAlert.innerHTML=low.length?low.map(p=>'<p><b>'+esc(p.name)+'</b> — <span class="low">'+p.stock+' left</span></p>').join(""):'<p class="muted">All products have healthy stock.</p>';recentOrders.innerHTML=orders.slice().reverse().slice(0,5).map(o=>'<p><b>#'+esc(o.id)+'</b> · '+esc(o.customer||"Customer")+' · '+money(o.total)+' <span class="badge '+statusClass(o.status||"New")+'">'+esc(o.status||"New")+'</span></p>').join("")||'<p class="muted">No orders yet.</p>'}
+function renderAll(){renderDashboard();renderProducts();renderOrders();renderCustomers();renderStock()}
+function closeModal(id){document.getElementById(id).classList.remove("show")}
+function clearDemo(){if(confirm("Clear all demo products and orders?")){localStorage.removeItem(KEY_P);localStorage.removeItem(KEY_O);products=[];orders=[];renderAll();toast("Demo data cleared")}}
+if(sessionStorage.getItem("bh_admin")==="1")openApp();
 </script>
-</body>
-</html>
+</body></html>
