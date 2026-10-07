@@ -24,10 +24,22 @@ label{display:block;font-size:13px;font-weight:700;margin:13px 0 6px}input,selec
 <button id="sendOtpBtn" style="width:100%;margin-top:12px" onclick="sendOTP()">Send OTP</button>
 <div id="otpStep" class="hidden">
 <label>Enter OTP</label><input id="otpCode" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="6-digit OTP">
-<button id="verifyOtpBtn" style="width:100%;margin-top:12px" onclick="verifyOTP()">Verify OTP & Login</button>
+<button id="verifyOtpBtn" style="width:100%;margin-top:12px" onclick="verifyOTP()">Verify OTP</button>
 <button class="btn-light" style="width:100%;margin-top:8px" onclick="resetOtp()">Change Number</button>
 </div>
-<p id="loginMsg" class="hint" style="margin-top:14px">Use the mobile number registered in your Firebase project. A real SMS OTP is sent by Firebase.</p>
+<div id="credentialStep" class="hidden">
+<label>Admin ID</label><input id="adminId" autocomplete="username" placeholder="Admin ID">
+<label>Admin Password</label><input id="adminPassword" type="password" autocomplete="current-password" placeholder="Password">
+<button style="width:100%;margin-top:12px" onclick="adminCredentialLogin()">Login to Admin Panel</button>
+<button class="btn-light" style="width:100%;margin-top:8px" onclick="startPasswordChange()">Change Password</button>
+</div>
+<div id="passwordChangeStep" class="hidden">
+<label>New Admin Password</label><input id="newAdminPassword" type="password" autocomplete="new-password" placeholder="New password">
+<label>Confirm New Password</label><input id="confirmAdminPassword" type="password" autocomplete="new-password" placeholder="Confirm password">
+<button style="width:100%;margin-top:12px" onclick="saveNewPassword()">Save New Password</button>
+<button class="btn-light" style="width:100%;margin-top:8px" onclick="backToCredentials()">Back to Login</button>
+</div>
+<p id="loginMsg" class="hint" style="margin-top:14px">First verify your mobile number with OTP. Then enter your Admin ID and password.</p>
 </div></div>
 
 <div id="app" class="app hidden">
@@ -55,7 +67,7 @@ label{display:block;font-size:13px;font-weight:700;margin:13px 0 6px}input,selec
 
 <section id="stock" class="section"><div class="title"><div><h1>Stock</h1><span class="muted">Monitor inventory levels</span></div></div><div class="panel"><div class="tablewrap"><table class="table"><thead><tr><th>Product</th><th>Category</th><th>Stock</th><th>Value</th><th>Action</th></tr></thead><tbody id="stockRows"></tbody></table></div></div></section>
 
-<section id="settings" class="section"><div class="title"><div><h1>Settings</h1><span class="muted">Admin panel settings</span></div></div><div class="grid3"><div class="panel"><h3>Phone OTP</h3><p class="muted">Admin login now uses Firebase Phone Authentication. Only verified phone numbers should be authorized as admins.</p></div><div class="panel"><h3>Data</h3><p class="muted">This version stores products and orders in browser localStorage.</p><button class="btn-danger" onclick="clearDemo()">Clear Demo Data</button></div><div class="panel"><h3>Production</h3><p class="muted">Firebase Phone Auth verifies the OTP. For full production security, connect the product/order database and restrict admin access server-side.</p></div></div></section>
+<section id="settings" class="section"><div class="title"><div><h1>Settings</h1><span class="muted">Admin panel settings</span></div></div><div class="grid3"><div class="panel"><h3>Security Login</h3><p class="muted">Login flow: Mobile Number → OTP → Admin ID + Password. Password changes require mobile OTP verification.</p></div><div class="panel"><h3>Data</h3><p class="muted">This version stores products and orders in browser localStorage.</p><button class="btn-danger" onclick="clearDemo()">Clear Demo Data</button></div><div class="panel"><h3>Production</h3><p class="muted">Firebase Phone Auth verifies the OTP. For full production security, connect the product/order database and restrict admin access server-side.</p></div></div></section>
 </main></div></div>
 
 <div id="productModal" class="modal"><div class="modalbox"><div class="modalhead"><h2 id="productModalTitle">Add Product</h2><button class="btn-light" onclick="closeModal('productModal')">✕</button></div>
@@ -87,7 +99,9 @@ try{
     firebase.initializeApp(firebaseConfig);
     firebaseReady=true;
     firebase.auth().onAuthStateChanged(user=>{
-      if(user){sessionStorage.setItem("bh_admin","1");openApp();}
+      if(user && sessionStorage.getItem("bh_phone_verified")==="1"){
+        showCredentialStep();
+      }
     });
   }
 }catch(e){console.error(e)}
@@ -121,18 +135,68 @@ async function verifyOTP(){
   const btn=document.getElementById("verifyOtpBtn");btn.disabled=true;btn.textContent="Verifying...";
   try{
     const result=await confirmationResult.confirm(code);
-    if(result.user){sessionStorage.setItem("bh_admin","1");openApp();}
+    if(result.user){
+      sessionStorage.setItem("bh_phone_verified","1");
+      document.getElementById("otpStep").classList.add("hidden");
+      showCredentialStep();
+    }
   }catch(e){console.error(e);alert("Invalid or expired OTP.");}
   finally{btn.disabled=false;btn.textContent="Verify OTP & Login";}
 }
 function resetOtp(){
   confirmationResult=null;
+  sessionStorage.removeItem("bh_phone_verified");
   document.getElementById("otpStep").classList.add("hidden");
+  document.getElementById("credentialStep").classList.add("hidden");
+  document.getElementById("passwordChangeStep").classList.add("hidden");
   document.getElementById("otpCode").value="";
   document.getElementById("sendOtpBtn").textContent="Send OTP";
   document.getElementById("sendOtpBtn").disabled=false;
+  document.getElementById("loginMsg").textContent="Enter your mobile number and verify OTP first.";
   try{setupRecaptcha()}catch(e){}
 }
+const CRED_KEY="boyshub_admin_credentials";
+function getCredentials(){
+  try{return JSON.parse(localStorage.getItem(CRED_KEY))||{id:"admin",password:"admin123"}}
+  catch(e){return {id:"admin",password:"admin123"}}
+}
+if(!localStorage.getItem(CRED_KEY))localStorage.setItem(CRED_KEY,JSON.stringify({id:"admin",password:"admin123"}));
+function showCredentialStep(){
+  document.getElementById("otpStep").classList.add("hidden");
+  document.getElementById("passwordChangeStep").classList.add("hidden");
+  document.getElementById("credentialStep").classList.remove("hidden");
+  document.getElementById("loginMsg").textContent="OTP verified. Now enter your Admin ID and password.";
+}
+function adminCredentialLogin(){
+  const id=document.getElementById("adminId").value.trim();
+  const pw=document.getElementById("adminPassword").value;
+  const saved=getCredentials();
+  if(id===saved.id && pw===saved.password){
+    sessionStorage.setItem("bh_admin","1");
+    openApp();
+  }else{
+    alert("Wrong Admin ID or password.");
+  }
+}
+function startPasswordChange(){
+  document.getElementById("credentialStep").classList.add("hidden");
+  document.getElementById("passwordChangeStep").classList.remove("hidden");
+  document.getElementById("loginMsg").textContent="Password change is protected by your verified mobile OTP.";
+}
+function saveNewPassword(){
+  if(sessionStorage.getItem("bh_phone_verified")!=="1"){alert("Verify your mobile number with OTP first.");return}
+  const pw=document.getElementById("newAdminPassword").value;
+  const cpw=document.getElementById("confirmAdminPassword").value;
+  if(pw.length<6){alert("Password must be at least 6 characters.");return}
+  if(pw!==cpw){alert("Passwords do not match.");return}
+  const saved=getCredentials();
+  localStorage.setItem(CRED_KEY,JSON.stringify({id:saved.id,password:pw}));
+  document.getElementById("newAdminPassword").value="";
+  document.getElementById("confirmAdminPassword").value="";
+  document.getElementById("loginMsg").textContent="Password changed successfully. Please login with your new password.";
+  showCredentialStep();
+}
+function backToCredentials(){showCredentialStep()}
 const KEY_P="boyshub_products",KEY_O="boyshub_orders";
 const defaults=[{id:1,name:"Essential Black T-Shirt",price:499,discount:0,cat:"T-Shirts",stock:20,image:"",description:"Classic everyday T-shirt."},{id:2,name:"Oversized Street Tee",price:699,discount:0,cat:"T-Shirts",stock:15,image:"",description:"Relaxed oversized fit."}];
 let products=load(KEY_P,null); if(!products){products=defaults;save(KEY_P,products)}
@@ -144,7 +208,12 @@ function finalPrice(p){return Math.round(Number(p.price||0)*(1-Number(p.discount
 function esc(v){return String(v??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[m]))}
 function toast(t){const x=document.getElementById("toast");x.textContent=t;x.style.display="block";setTimeout(()=>x.style.display="none",1800)}
 function login(){return sendOTP()}
-async function logout(){sessionStorage.removeItem("bh_admin");if(firebaseReady)try{await firebase.auth().signOut()}catch(e){}location.reload()}
+async function logout(){
+  sessionStorage.removeItem("bh_admin");
+  sessionStorage.removeItem("bh_phone_verified");
+  if(firebaseReady)try{await firebase.auth().signOut()}catch(e){}
+  location.reload()
+}
 function openApp(){document.getElementById("login").classList.add("hidden");document.getElementById("app").classList.remove("hidden");renderAll()}
 function showTab(tab){document.querySelectorAll(".section").forEach(x=>x.classList.toggle("active",x.id===tab));document.querySelectorAll(".nav").forEach(x=>x.classList.toggle("active",x.dataset.tab===tab));renderAll()}
 document.querySelectorAll(".nav").forEach(b=>b.onclick=()=>showTab(b.dataset.tab));
@@ -164,6 +233,13 @@ function renderDashboard(){mProducts.textContent=products.length;mOrders.textCon
 function renderAll(){renderDashboard();renderProducts();renderOrders();renderCustomers();renderStock()}
 function closeModal(id){document.getElementById(id).classList.remove("show")}
 function clearDemo(){if(confirm("Clear all demo products and orders?")){localStorage.removeItem(KEY_P);localStorage.removeItem(KEY_O);products=[];orders=[];renderAll();toast("Demo data cleared")}}
-if(sessionStorage.getItem("bh_admin")==="1" && firebaseReady){firebase.auth().onAuthStateChanged(u=>{if(u)openApp();else sessionStorage.removeItem("bh_admin")})}else if(!firebaseReady){document.getElementById("loginMsg").textContent="Firebase setup is required before OTP login can work.";}
+if(sessionStorage.getItem("bh_admin")==="1" && firebaseReady){
+  firebase.auth().onAuthStateChanged(u=>{
+    if(u && sessionStorage.getItem("bh_phone_verified")==="1") openApp();
+    else sessionStorage.removeItem("bh_admin");
+  })
+}else if(!firebaseReady){
+  document.getElementById("loginMsg").textContent="Firebase setup is required before OTP login can work.";
+}
 </script>
 </body></html>
