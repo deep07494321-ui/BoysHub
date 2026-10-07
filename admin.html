@@ -18,11 +18,17 @@ label{display:block;font-size:13px;font-weight:700;margin:13px 0 6px}input,selec
 </head>
 <body>
 <div id="login" class="login">
-<div class="loginbox"><div class="logo">BOYSHUB</div><h1>Admin Panel</h1><p class="muted">Sign in to manage your store.</p>
-<label>Username</label><input id="loginUser" autocomplete="username" placeholder="admin">
-<label>Password</label><input id="loginPass" type="password" autocomplete="current-password" placeholder="admin123">
-<button style="width:100%;margin-top:12px" onclick="login()">Login</button>
-<p class="hint">Demo login for the current static site: <b>admin</b> / <b>admin123</b>.<br>For production security, connect Supabase Auth.</p></div></div>
+<div class="loginbox"><div class="logo">BOYSHUB</div><h1>Admin Panel</h1><p class="muted">Secure login with mobile OTP.</p>
+<label>Mobile Number</label><input id="phoneNumber" type="tel" inputmode="tel" autocomplete="tel" placeholder="+91 9876543210">
+<div id="recaptcha-container" style="margin-top:12px"></div>
+<button id="sendOtpBtn" style="width:100%;margin-top:12px" onclick="sendOTP()">Send OTP</button>
+<div id="otpStep" class="hidden">
+<label>Enter OTP</label><input id="otpCode" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="6-digit OTP">
+<button id="verifyOtpBtn" style="width:100%;margin-top:12px" onclick="verifyOTP()">Verify OTP & Login</button>
+<button class="btn-light" style="width:100%;margin-top:8px" onclick="resetOtp()">Change Number</button>
+</div>
+<p id="loginMsg" class="hint" style="margin-top:14px">Use the mobile number registered in your Firebase project. A real SMS OTP is sent by Firebase.</p>
+</div></div>
 
 <div id="app" class="app hidden">
 <header class="top"><div class="logo">BOYSHUB ADMIN</div><div class="top-actions"><a class="store" href="index.html" style="color:#fff;text-decoration:none;padding:10px">View Store</a><button class="btn-light" onclick="logout()">Logout</button></div></header>
@@ -49,7 +55,7 @@ label{display:block;font-size:13px;font-weight:700;margin:13px 0 6px}input,selec
 
 <section id="stock" class="section"><div class="title"><div><h1>Stock</h1><span class="muted">Monitor inventory levels</span></div></div><div class="panel"><div class="tablewrap"><table class="table"><thead><tr><th>Product</th><th>Category</th><th>Stock</th><th>Value</th><th>Action</th></tr></thead><tbody id="stockRows"></tbody></table></div></div></section>
 
-<section id="settings" class="section"><div class="title"><div><h1>Settings</h1><span class="muted">Admin panel settings</span></div></div><div class="grid3"><div class="panel"><h3>Demo Login</h3><p class="muted">Username: admin<br>Password: admin123</p></div><div class="panel"><h3>Data</h3><p class="muted">This version stores products and orders in browser localStorage.</p><button class="btn-danger" onclick="clearDemo()">Clear Demo Data</button></div><div class="panel"><h3>Production</h3><p class="muted">Supabase should be connected for shared database, secure authentication, real orders and stock.</p></div></div></section>
+<section id="settings" class="section"><div class="title"><div><h1>Settings</h1><span class="muted">Admin panel settings</span></div></div><div class="grid3"><div class="panel"><h3>Phone OTP</h3><p class="muted">Admin login now uses Firebase Phone Authentication. Only verified phone numbers should be authorized as admins.</p></div><div class="panel"><h3>Data</h3><p class="muted">This version stores products and orders in browser localStorage.</p><button class="btn-danger" onclick="clearDemo()">Clear Demo Data</button></div><div class="panel"><h3>Production</h3><p class="muted">Firebase Phone Auth verifies the OTP. For full production security, connect the product/order database and restrict admin access server-side.</p></div></div></section>
 </main></div></div>
 
 <div id="productModal" class="modal"><div class="modalbox"><div class="modalhead"><h2 id="productModalTitle">Add Product</h2><button class="btn-light" onclick="closeModal('productModal')">✕</button></div>
@@ -58,7 +64,75 @@ label{display:block;font-size:13px;font-weight:700;margin:13px 0 6px}input,selec
 <div id="orderModal" class="modal"><div class="modalbox"><div class="modalhead"><h2>Order Details</h2><button class="btn-light" onclick="closeModal('orderModal')">✕</button></div><div id="orderDetail"></div></div></div>
 <div id="toast" class="toast"></div>
 
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
 <script>
+/* Firebase Phone Auth setup:
+   1) Create a Firebase project and enable Authentication > Sign-in method > Phone.
+   2) Add this GitHub Pages domain as an authorized domain.
+   3) Replace the values below with your Firebase Web App config.
+   4) For production, restrict admin access to an allowlisted phone/custom claim on the backend.
+*/
+const firebaseConfig={
+  apiKey:"YOUR_FIREBASE_API_KEY",
+  authDomain:"YOUR_PROJECT.firebaseapp.com",
+  projectId:"YOUR_PROJECT_ID",
+  storageBucket:"YOUR_PROJECT.appspot.com",
+  messagingSenderId:"YOUR_MESSAGING_SENDER_ID",
+  appId:"YOUR_FIREBASE_APP_ID"
+};
+let firebaseReady=false,confirmationResult=null,recaptchaVerifier=null;
+try{
+  if(firebaseConfig.apiKey!=="YOUR_FIREBASE_API_KEY"){
+    firebase.initializeApp(firebaseConfig);
+    firebaseReady=true;
+    firebase.auth().onAuthStateChanged(user=>{
+      if(user){sessionStorage.setItem("bh_admin","1");openApp();}
+    });
+  }
+}catch(e){console.error(e)}
+function setupRecaptcha(){
+  if(!firebaseReady)return;
+  if(recaptchaVerifier)try{recaptchaVerifier.clear()}catch(e){}
+  recaptchaVerifier=new firebase.auth.RecaptchaVerifier("recaptcha-container",{size:"normal"});
+  recaptchaVerifier.render();
+}
+async function sendOTP(){
+  if(!firebaseReady){alert("Firebase is not configured yet. Open admin.html and add your Firebase Web App config.");return}
+  const phone=document.getElementById("phoneNumber").value.trim();
+  if(!/^\+[1-9]\d{7,14}$/.test(phone)){alert("Enter your mobile number with country code, e.g. +919876543210");return}
+  const btn=document.getElementById("sendOtpBtn");btn.disabled=true;btn.textContent="Sending OTP...";
+  try{
+    if(!recaptchaVerifier)setupRecaptcha();
+    confirmationResult=await firebase.auth().signInWithPhoneNumber(phone,recaptchaVerifier);
+    document.getElementById("otpStep").classList.remove("hidden");
+    document.getElementById("loginMsg").textContent="OTP sent. Enter the 6-digit code received on your phone.";
+    btn.textContent="OTP Sent";btn.disabled=true;
+  }catch(e){
+    console.error(e);alert(e.message||"Could not send OTP.");
+    btn.disabled=false;btn.textContent="Send OTP";
+    try{setupRecaptcha()}catch(x){}
+  }
+}
+async function verifyOTP(){
+  if(!confirmationResult)return;
+  const code=document.getElementById("otpCode").value.trim();
+  if(!/^\d{6}$/.test(code)){alert("Enter the 6-digit OTP.");return}
+  const btn=document.getElementById("verifyOtpBtn");btn.disabled=true;btn.textContent="Verifying...";
+  try{
+    const result=await confirmationResult.confirm(code);
+    if(result.user){sessionStorage.setItem("bh_admin","1");openApp();}
+  }catch(e){console.error(e);alert("Invalid or expired OTP.");}
+  finally{btn.disabled=false;btn.textContent="Verify OTP & Login";}
+}
+function resetOtp(){
+  confirmationResult=null;
+  document.getElementById("otpStep").classList.add("hidden");
+  document.getElementById("otpCode").value="";
+  document.getElementById("sendOtpBtn").textContent="Send OTP";
+  document.getElementById("sendOtpBtn").disabled=false;
+  try{setupRecaptcha()}catch(e){}
+}
 const KEY_P="boyshub_products",KEY_O="boyshub_orders";
 const defaults=[{id:1,name:"Essential Black T-Shirt",price:499,discount:0,cat:"T-Shirts",stock:20,image:"",description:"Classic everyday T-shirt."},{id:2,name:"Oversized Street Tee",price:699,discount:0,cat:"T-Shirts",stock:15,image:"",description:"Relaxed oversized fit."}];
 let products=load(KEY_P,null); if(!products){products=defaults;save(KEY_P,products)}
@@ -69,8 +143,8 @@ function money(n){return "₹"+Number(n||0).toLocaleString("en-IN")}
 function finalPrice(p){return Math.round(Number(p.price||0)*(1-Number(p.discount||0)/100))}
 function esc(v){return String(v??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[m]))}
 function toast(t){const x=document.getElementById("toast");x.textContent=t;x.style.display="block";setTimeout(()=>x.style.display="none",1800)}
-function login(){const u=document.getElementById("loginUser").value.trim();const p=document.getElementById("loginPass").value;if(u==="admin"&&p==="admin123"){sessionStorage.setItem("bh_admin","1");openApp()}else alert("Wrong username or password")}
-function logout(){sessionStorage.removeItem("bh_admin");location.reload()}
+function login(){return sendOTP()}
+async function logout(){sessionStorage.removeItem("bh_admin");if(firebaseReady)try{await firebase.auth().signOut()}catch(e){}location.reload()}
 function openApp(){document.getElementById("login").classList.add("hidden");document.getElementById("app").classList.remove("hidden");renderAll()}
 function showTab(tab){document.querySelectorAll(".section").forEach(x=>x.classList.toggle("active",x.id===tab));document.querySelectorAll(".nav").forEach(x=>x.classList.toggle("active",x.dataset.tab===tab));renderAll()}
 document.querySelectorAll(".nav").forEach(b=>b.onclick=()=>showTab(b.dataset.tab));
@@ -90,6 +164,6 @@ function renderDashboard(){mProducts.textContent=products.length;mOrders.textCon
 function renderAll(){renderDashboard();renderProducts();renderOrders();renderCustomers();renderStock()}
 function closeModal(id){document.getElementById(id).classList.remove("show")}
 function clearDemo(){if(confirm("Clear all demo products and orders?")){localStorage.removeItem(KEY_P);localStorage.removeItem(KEY_O);products=[];orders=[];renderAll();toast("Demo data cleared")}}
-if(sessionStorage.getItem("bh_admin")==="1")openApp();
+if(sessionStorage.getItem("bh_admin")==="1" && firebaseReady){firebase.auth().onAuthStateChanged(u=>{if(u)openApp();else sessionStorage.removeItem("bh_admin")})}else if(!firebaseReady){document.getElementById("loginMsg").textContent="Firebase setup is required before OTP login can work.";}
 </script>
 </body></html>
