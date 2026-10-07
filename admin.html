@@ -138,7 +138,13 @@ async function verifyOTP(){
     if(result.user){
       sessionStorage.setItem("bh_phone_verified","1");
       document.getElementById("otpStep").classList.add("hidden");
-      showCredentialStep();
+      if(sessionStorage.getItem("bh_pw_change_mode")==="1"){
+        sessionStorage.removeItem("bh_pw_change_mode");
+        document.getElementById("passwordChangeStep").classList.remove("hidden");
+        document.getElementById("loginMsg").textContent="OTP verified. Now set your new admin password.";
+      }else{
+        showCredentialStep();
+      }
     }
   }catch(e){console.error(e);alert("Invalid or expired OTP.");}
   finally{btn.disabled=false;btn.textContent="Verify OTP & Login";}
@@ -179,6 +185,7 @@ function adminCredentialLogin(){
   }
 }
 function startPasswordChange(){
+  sessionStorage.setItem("bh_pw_change_mode","1");
   sessionStorage.removeItem("bh_phone_verified");
   sessionStorage.removeItem("bh_admin");
   if(firebaseReady)firebase.auth().signOut().catch(()=>{});
