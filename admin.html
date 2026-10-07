@@ -179,9 +179,18 @@ function adminCredentialLogin(){
   }
 }
 function startPasswordChange(){
+  sessionStorage.removeItem("bh_phone_verified");
+  sessionStorage.removeItem("bh_admin");
+  if(firebaseReady)firebase.auth().signOut().catch(()=>{});
   document.getElementById("credentialStep").classList.add("hidden");
-  document.getElementById("passwordChangeStep").classList.remove("hidden");
-  document.getElementById("loginMsg").textContent="Password change is protected by your verified mobile OTP.";
+  document.getElementById("passwordChangeStep").classList.add("hidden");
+  document.getElementById("otpStep").classList.add("hidden");
+  document.getElementById("phoneNumber").value="";
+  document.getElementById("otpCode").value="";
+  document.getElementById("sendOtpBtn").textContent="Send OTP";
+  document.getElementById("sendOtpBtn").disabled=false;
+  document.getElementById("loginMsg").textContent="Enter your mobile number and verify OTP to continue.";
+  try{setupRecaptcha()}catch(e){}
 }
 function saveNewPassword(){
   if(sessionStorage.getItem("bh_phone_verified")!=="1"){alert("Verify your mobile number with OTP first.");return}
