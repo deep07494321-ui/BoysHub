@@ -324,7 +324,9 @@ body{background:#f8f7f2!important;color:var(--ink)!important}
 /* Friendly 3D kids guide */
 .kidsGuide{position:fixed;right:18px;top:108px;z-index:30;display:flex;align-items:center;gap:8px;border:0;background:transparent;cursor:pointer;filter:drop-shadow(0 8px 10px #30231630);transition:transform .25s}
 .kidsGuide:hover{transform:translateY(-5px) scale(1.04)}
-.kidsBuddy{width:78px;height:92px;border-radius:44% 44% 38% 38%;background:linear-gradient(145deg,#fff4df,#d8b18a);border:3px solid #fff;position:relative;display:flex;align-items:center;justify-content:center;font-size:45px;box-shadow:inset -8px -7px 0 #a87b5730,0 5px 0 #9c7556}
+.kidsBuddy{width:100px;height:116px;border-radius:22px;background:#fff;border:3px solid #fff;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden;box-shadow:0 8px 22px #30231630}
+.kidsBuddy img{width:100%;height:100%;object-fit:cover;object-position:center top;display:block}
+
 .kidsBubble{background:#fffdf7;border:1px solid #e5dac8;border-radius:16px 16px 3px 16px;padding:9px 11px;color:#383126;font-size:11px;font-weight:700;max-width:110px}
 .kidsPanel{display:none;background:#fffdf7;border:1px solid #ded5c6;border-radius:18px;padding:22px;margin:0 0 26px;box-shadow:0 15px 45px #241c1620}
 .kidsPanel.open{display:block;animation:kidsPop .3s ease-out}
@@ -334,11 +336,11 @@ body{background:#f8f7f2!important;color:var(--ink)!important}
 .kidsPanelLinks a{display:block;text-decoration:none;color:#292820;background:#f1eee5;border-radius:12px;padding:16px 12px;font-size:13px;font-weight:700}
 .kidsPanelLinks a span{display:block;font-size:11px;font-weight:400;margin-top:6px;color:#6d7048}
 @keyframes kidsPop{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
-@media(max-width:650px){.kidsGuide{top:auto;bottom:16px;right:10px}.kidsBuddy{width:59px;height:69px;font-size:34px}.kidsBubble{font-size:10px;max-width:85px}.kidsPanelLinks{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:650px){.kidsGuide{top:auto;bottom:16px;right:10px}.kidsBuddy{width:68px;height:78px}.kidsBubble{font-size:10px;max-width:85px}.kidsPanelLinks{grid-template-columns:repeat(2,minmax(0,1fr))}}
 </style>
 </head>
 <body>
-<button class="kidsGuide" id="kidsGuide" aria-label="Open kids collection"><span class="kidsBuddy" aria-hidden="true">🧒🏻</span><span class="kidsBubble">Hi! Tap me for Kids ✨</span></button>
+<button class="kidsGuide" id="kidsGuide" aria-label="Open kids collection"><span class="kidsBuddy" aria-hidden="true"><img src="https://images.unsplash.com/photo-1559918095-0e91f93a8dd8?auto=format&fit=crop&w=360&h=460&q=85" alt=""></span><span class="kidsBubble">Hi! Tap me for Kids ✨</span></button>
 <div class="topbar">FREE SHIPPING ON ORDERS ABOVE ₹999 &nbsp; • &nbsp; EASY 7-DAY RETURNS</div>
 <nav class="nav">
 <a class="logo brand" href="index.html" aria-label="VELQORO home"><span class="brandmark" aria-hidden="true"><svg viewBox="0 0 64 64" width="42" height="42"><defs><linearGradient id="vg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f1d69b"/><stop offset="1" stop-color="#9a6b2f"/></linearGradient></defs><path d="M8 12h18c13 0 17 15 5 20 15 4 10 20-4 20H8V12zm10 9v8h7c6 0 6-8 0-8h-7zm0 16v7h8c6 0 6-7 0-7h-8z" fill="url(#vg)"/><path d="M37 10h17L34 53H18l5-9h7L42 20h-9z" fill="#fff" opacity=".92"/></svg></span><span class="brandword">VELQORO</span></a>
