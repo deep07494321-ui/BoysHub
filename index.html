@@ -317,8 +317,14 @@ body{background:var(--ivory)!important;color:var(--ink)!important;font-family:Ar
 <footer class="footer"><div><h3>VELQORO</h3><p>Modern boys fashion for everyday confidence.</p><div class="copy">© 2026 VELQORO. All rights reserved.</div></div><div><h3>Shop</h3><a href="shop.html">All Products</a><br><a href="shop.html?cat=T-Shirts">T-Shirts</a><br><a href="shop.html?cat=Bottomwear">Bottomwear</a><br><a href="shop.html?cat=Hoodies">Hoodies</a></div><div><h3>Help</h3><a href="cart.html">Cart & Checkout</a><br><a href="admin.html">Admin</a></div></footer>
 
 <script>
-const defaults=[{id:1,name:"Essential Black T-Shirt",price:499,discount:20,cat:"T-Shirts",stock:20,image:""},{id:2,name:"Oversized Street Tee",price:699,discount:15,cat:"T-Shirts",stock:15,image:""},{id:3,name:"Classic Cargo Pants",price:999,discount:10,cat:"Bottomwear",stock:10,image:""},{id:4,name:"Everyday Hoodie",price:1199,discount:0,cat:"Hoodies",stock:8,image:""}];
-const products=JSON.parse(localStorage.getItem("velqoro_products")||"null")||defaults;
+const catalogGroups=[
+{department:"Men",categories:[["T-Shirts",["Essential Cotton T-Shirt","Oversized Street Tee","Graphic Print Tee","Polo T-Shirt"],[499,699,599,799]],["Shirts",["Casual Oxford Shirt","Checked Casual Shirt","Linen Blend Shirt","Denim Shirt"],[899,999,1099,1199]],["Jeans",["Slim Fit Jeans","Relaxed Blue Jeans","Black Denim Jeans","Straight Fit Jeans"],[1299,1499,1399,1599]],["Hoodies",["Everyday Hoodie","Zip-Up Hoodie","Graphic Hoodie","Fleece Sweatshirt"],[1199,1499,1399,1299]]]},
+{department:"Women",categories:[["Tops",["Everyday Ribbed Top","Relaxed Fit Shirt","Printed Casual Top","Classic Crop Top"],[599,899,699,649]],["Dresses",["Floral Midi Dress","Everyday Shirt Dress","Evening Maxi Dress","Casual Summer Dress"],[1299,1599,1899,1199]],["Women Jeans",["High-Rise Straight Jeans","Wide-Leg Denim","Skinny Fit Jeans","Relaxed Mom Jeans"],[1399,1599,1299,1499]],["Ethnic Wear",["Printed Kurta","Kurta Trouser Set","Festive Straight Kurta","Everyday Cotton Kurta"],[999,1799,1499,899]]]},
+{department:"Kids",categories:[["Kids T-Shirts",["Kids Cotton T-Shirt","Dino Print Tee","Colour Block Tee","Kids Polo Tee"],[299,399,349,449]],["Kids Sets",["T-Shirt Shorts Set","Printed Co-Ord Set","Everyday Cotton Set","Sporty Tracksuit Set"],[599,799,699,999]],["Kids Dresses",["Floral Party Dress","Everyday Frock","Printed Summer Dress","Festive Kids Dress"],[899,699,799,1199]],["Kids Bottomwear",["Kids Denim Jeans","Cotton Joggers","Casual Shorts","Stretchable Trousers"],[699,499,349,599]]]}
+];
+function buildCatalog(){const out=[];let id=100;catalogGroups.forEach(group=>group.categories.forEach(row=>row[1].forEach((name,i)=>out.push({id:id++,name,department:group.department,cat:row[0],price:row[2][i],discount:i===0?10:0,stock:12,image:"",description:group.department+" "+row[0]+" — comfortable everyday style."}))));return out;}
+const defaults=buildCatalog();
+let products=JSON.parse(localStorage.getItem("velqoro_products")||"null");if(!products){products=defaults;localStorage.setItem("velqoro_products",JSON.stringify(products));}
 let cart=JSON.parse(localStorage.getItem("velqoro_cart")||"[]");
 const money=n=>"₹"+Math.round(Number(n)||0);
 function count(){document.getElementById("count").textContent=cart.reduce((a,b)=>a+(Number(b.qty)||0),0)}
