@@ -288,6 +288,39 @@ body{background:var(--ivory)!important;color:var(--ink)!important;font-family:Ar
 .saleCard .old{color:#999!important;font-weight:400!important}
 @media(max-width:700px){.saleIntro{font-size:13px!important;line-height:1.6!important}.saleSection .sectionHead{align-items:flex-start!important;gap:12px!important}.saleSection .link{white-space:nowrap!important;margin-top:14px!important;font-size:9px!important}}
 </style>
+<style id="velqoro-family-home">
+:root{--olive:#6d7048;--ivory:#f6f4ee;--ink:#272821}
+body{background:#f8f7f2!important;color:var(--ink)!important}
+.hero{min-height:590px!important;align-items:stretch!important;background:#eeece3!important}
+.heroCopy{padding:clamp(32px,6vw,88px)!important;display:flex;flex-direction:column;justify-content:center}
+.heroCopy h1{font-family:Georgia,serif!important;font-weight:400!important;letter-spacing:-2px!important;line-height:.98!important;font-size:clamp(48px,6.5vw,88px)!important}
+.heroCopy p{max-width:440px!important;font-size:15px!important;line-height:1.9!important}
+.heroNotes{display:flex;gap:22px;margin-top:28px;font-size:10px;letter-spacing:2px;color:var(--olive)}
+.heroVisual{min-height:500px!important;background:#d8d5c8!important;overflow:hidden!important}
+.heroVisual:before{background-image:url('https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=1200&q=85')!important;background-size:cover!important;background-position:center 35%!important;transform:none!important}
+.heroVisual .tag{background:var(--olive)!important;color:#fff!important}
+.primary{background:var(--olive)!important;color:#fff!important;border-radius:0!important;letter-spacing:1px!important}
+.trust{background:#fff!important;border-color:#e7e4d9!important}
+.section{padding-top:68px!important;padding-bottom:68px!important}
+.collectionSection{background:#fff!important}
+.collectionTiles{display:grid;grid-template-columns:1.12fr 1fr 1fr;gap:18px;margin-top:30px}
+.collectionTile{position:relative;display:block;height:430px;overflow:hidden;background:#dedbd0;color:white;text-decoration:none}
+.collectionTile:after{content:"";position:absolute;inset:25% 0 0;background:linear-gradient(transparent,#111a)}
+.collectionTile img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s}
+.collectionTile:hover img{transform:scale(1.045)}
+.tileLabel{position:absolute;z-index:1;bottom:24px;left:24px;right:18px;display:flex;flex-direction:column;gap:9px}
+.tileLabel small{font-size:9px;letter-spacing:2px}
+.tileLabel strong{font-family:Georgia,serif;font-size:clamp(22px,2.5vw,34px);font-weight:400}
+.tileLabel em{font-size:11px;font-style:normal;letter-spacing:1px}
+.story{background:#eae8de!important}
+.storyVisual.storyPhoto{position:relative;min-height:420px;overflow:hidden}
+.storyPhoto img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 40%}
+.storyPhoto .pack{position:absolute;z-index:1;bottom:18px;right:18px;background:#f8f7f2e8;color:#34362b;padding:14px 18px;letter-spacing:3px}
+.news{background:#f0eee5!important}
+.footer{background:#262820!important;color:#f7f4ec!important}
+@media(max-width:760px){.hero{grid-template-columns:1fr!important}.heroCopy{padding:38px 24px!important}.heroVisual{min-height:360px!important}.heroCopy h1{font-size:54px!important}.collectionTiles{grid-template-columns:1fr 1fr!important;gap:10px}.collectionTile{height:300px}.womenTile{grid-column:1/-1;height:390px}.tileLabel{left:14px;bottom:16px}.tileLabel strong{font-size:23px}.tileLabel small{font-size:8px}.section{padding:44px 18px!important}.story{grid-template-columns:1fr!important}.storyVisual.storyPhoto{min-height:340px}}
+@media(max-width:400px){.collectionTiles{grid-template-columns:1fr!important}.womenTile{grid-column:auto}.collectionTile{height:350px}}
+</style>
 </head>
 <body>
 <div class="topbar">FREE SHIPPING ON ORDERS ABOVE ₹999 &nbsp; • &nbsp; EASY 7-DAY RETURNS</div>
@@ -298,8 +331,8 @@ body{background:var(--ivory)!important;color:var(--ink)!important;font-family:Ar
 </nav>
 
 <section class="hero">
-<div class="heroCopy"><span class="eyebrow">VELQORO / NEW SEASON 2026</span><h1>BUILT FOR<br>EVERYDAY.</h1><p>Clean fits. Easy comfort. Street-ready style. Discover modern boyswear designed for school days, weekends and everything in between.</p><a class="primary" href="shop.html">Shop the collection&nbsp; →</a></div>
-<div class="heroVisual"><div class="shirt"></div><div class="tag">VELQORO<br>ORIGINAL</div></div>
+<div class="heroCopy"><span class="eyebrow">VELQORO / STYLE FOR EVERYONE</span><h1>YOUR STYLE.<br>YOUR STORY.</h1><p>Discover fresh looks for women, men and kids — everyday essentials, standout outfits and feel-good fashion for every moment.</p><a class="primary" href="#collections">Explore collections&nbsp; →</a><div class="heroNotes"><span>WOMEN</span><span>MEN</span><span>KIDS</span></div></div>
+<div class="heroVisual"><div class="shirt"></div><div class="tag">NEW SEASON<br>VELQORO</div></div>
 </section>
 
 <div class="trust"><div>PREMIUM FABRICS<span>Made for everyday comfort</span></div><div>SECURE CHECKOUT<span>Safe & simple shopping</span></div><div>FAST DELIVERY<span>Carefully packed orders</span></div><div>7-DAY RETURNS<span>Easy return support</span></div></div>
@@ -308,13 +341,17 @@ body{background:var(--ivory)!important;color:var(--ink)!important;font-family:Ar
 
 <section class="section saleSection" id="sale"><div class="sectionHead"><div><span class="eyebrow">LIMITED-TIME OFFERS</span><h2>Sale — Up to 20% Off</h2></div><a class="link" href="shop.html?filter=sale">SHOP ALL SALE →</a></div><p class="saleIntro">Fresh fits, better prices. Grab your favourites before they are gone.</p><div class="grid" id="saleProducts"></div></section>
 
-<section class="section" id="categories"><div class="sectionHead"><div><span class="eyebrow">FIND YOUR FIT</span><h2>Shop by Category</h2></div></div><div class="categoryGrid"><div class="category"><h3>Men’s Collection</h3><p>Everyday essentials & streetwear</p><a href="shop.html?department=Men"></a></div><div class="category"><h3>Women’s Collection</h3><p>Modern styles for every day</p><a href="shop.html?department=Women"></a></div><div class="category"><h3>Kids’ Collection</h3><p>Comfortable fits for little ones</p><a href="shop.html?department=Kids"></a></div></div></section>
+<section class="section collectionSection" id="collections"><div class="sectionHead"><div><span class="eyebrow">FIND YOUR NEXT FAVOURITE</span><h2>Shop every story</h2></div><a class="link" href="shop.html">VIEW ALL →</a></div><div class="collectionTiles">
+<a class="collectionTile womenTile" href="shop.html?department=Women"><img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=1000&q=85" alt="Women fashion collection"><span class="tileLabel"><small>01 / THE WOMEN'S EDIT</small><strong>Women’s Collection</strong><em>Explore the edit ↗</em></span></a>
+<a class="collectionTile menTile" href="shop.html?department=Men"><img src="https://images.unsplash.com/photo-1516257984-b1b4d707412e?auto=format&fit=crop&w=1000&q=85" alt="Men fashion collection"><span class="tileLabel"><small>02 / THE MEN'S EDIT</small><strong>Men’s Collection</strong><em>Find your fit ↗</em></span></a>
+<a class="collectionTile kidsTile" href="shop.html?department=Kids"><img src="https://images.unsplash.com/photo-1519238263530-99bdd11df2ea?auto=format&fit=crop&w=1000&q=85" alt="Kids fashion collection"><span class="tileLabel"><small>03 / THE LITTLE ONES</small><strong>Kids’ Collection</strong><em>Shop little looks ↗</em></span></a>
+</div></section>
 
-<section class="story" id="story"><div class="storyText"><span class="eyebrow">THE VELQORO STANDARD</span><h2>Simple style.<br>Better everyday.</h2><p>We believe good clothes should look sharp, feel comfortable and fit real life. VELQORO brings together clean silhouettes, wearable colours and everyday essentials at honest prices.</p><a class="primary" href="shop.html">Explore VELQORO →</a></div><div class="storyVisual"><div class="pack">VELQORO</div></div></section>
+<section class="story" id="story"><div class="storyText"><span class="eyebrow">THE VELQORO STANDARD</span><h2>Simple style.<br>Better everyday.</h2><p>We believe good clothes should look sharp, feel comfortable and fit real life. VELQORO brings together clean silhouettes, wearable colours and everyday essentials at honest prices.</p><a class="primary" href="shop.html">Explore VELQORO →</a></div><div class="storyVisual storyPhoto"><img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=1100&q=85" alt="Women browsing and styling fashion"><div class="pack">VELQORO</div></div></section>
 
 <section class="news"><span class="eyebrow">STAY IN THE LOOP</span><h2>New drops. No noise.</h2><p>Get updates about new arrivals and exclusive offers.</p><form onsubmit="event.preventDefault();alert('Thank you for joining VELQORO!')"><input type="email" required placeholder="Your email address"><button>JOIN</button></form></section>
 
-<footer class="footer"><div><h3>VELQORO</h3><p>Modern boys fashion for everyday confidence.</p><div class="copy">© 2026 VELQORO. All rights reserved.</div></div><div><h3>Shop</h3><a href="shop.html">All Products</a><br><a href="shop.html?cat=T-Shirts">T-Shirts</a><br><a href="shop.html?cat=Bottomwear">Bottomwear</a><br><a href="shop.html?cat=Hoodies">Hoodies</a></div><div><h3>Help</h3><a href="cart.html">Cart & Checkout</a><br><a href="admin.html">Admin</a></div></footer>
+<footer class="footer"><div><h3>VELQORO</h3><p>Thoughtful everyday style for women, men and kids.</p><div class="copy">© 2026 VELQORO. All rights reserved.</div></div><div><h3>Shop</h3><a href="shop.html">All Products</a><br><a href="shop.html?cat=T-Shirts">T-Shirts</a><br><a href="shop.html?cat=Bottomwear">Bottomwear</a><br><a href="shop.html?cat=Hoodies">Hoodies</a></div><div><h3>Help</h3><a href="cart.html">Cart & Checkout</a><br><a href="admin.html">Admin</a></div></footer>
 
 <script>
 const catalogGroups=[
