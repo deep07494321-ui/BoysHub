@@ -89,76 +89,93 @@ const firebaseConfig={
   appId:"1:682070748642:web:277716986b7218b5931dbb"
 };
 let firebaseReady=false,currentUser=null;
+const ADMIN_EMAIL="deep07494321@gmail.com";
 try{
   firebase.initializeApp(firebaseConfig);
   firebaseReady=true;
-  firebase.auth().onAuthStateChanged(async user=>{
+  firebase.auth().onAuthStateChanged(user=>{
     currentUser=user||null;
-    if(user && sessionStorage.getItem("bh_admin")==="1") openApp();
+    if(user && user.email && user.email.toLowerCase()===ADMIN_EMAIL && sessionStorage.getItem("bh_admin")==="1"){
+      openApp();
+    }else{
+      document.getElementById("app").classList.add("hidden");
+      document.getElementById("login").classList.remove("hidden");
+      if(user && user.email && user.email.toLowerCase()!==ADMIN_EMAIL){
+        firebase.auth().signOut().catch(()=>{});
+        sessionStorage.removeItem("bh_admin");
+        document.getElementById("loginMsg").textContent="This email is not authorized for BOYSHUB admin access.";
+      }
+    }
   });
-}catch(e){console.error(e)}
-
+}catch(e){
+  console.error(e);
+  document.getElementById("loginMsg").textContent="Firebase could not start. Refresh the page and try again.";
+}
 async function loginWithEmail(){
-  if(!firebaseReady)return alert("Firebase is not configured.");
-  const email=document.getElementById("adminEmail").value.trim();
+  if(!firebaseReady){document.getElementById("loginMsg").textContent="Firebase could not start. Please refresh and try again.";return;}
+  const email=document.getElementById("adminEmail").value.trim().toLowerCase();
   const password=document.getElementById("adminPassword").value;
-  if(!email||!password)return alert("Enter your email and password.");
-  const btn=document.getElementById("loginBtn");btn.disabled=true;btn.textContent="Signing in...";
+  const msg=document.getElementById("loginMsg");
+  const btn=document.getElementById("loginBtn");
+  if(!email||!password){msg.textContent="Enter your admin email and password.";return;}
+  if(email!==ADMIN_EMAIL){msg.textContent="This email is not authorized for BOYSHUB admin access.";return;}
+  btn.disabled=true;btn.textContent="Signing in...";msg.textContent="Checking your login details...";
   try{
     const cred=await firebase.auth().signInWithEmailAndPassword(email,password);
-    const user=cred.user;
-    if(!user.emailVerified){
-      await user.sendEmailVerification();
-      document.getElementById("verifyEmail").textContent=user.email;
-      document.getElementById("loginStep").classList.add("hidden");
-      document.getElementById("verifyStep").classList.remove("hidden");
-      document.getElementById("loginMsg").textContent="Verification email sent. Check your inbox and spam folder.";
-    }else{
-      sessionStorage.setItem("bh_admin","1");
-      openApp();
+    if(!cred.user || cred.user.email.toLowerCase()!==ADMIN_EMAIL){
+      await firebase.auth().signOut();
+      throw new Error("This email is not authorized for BOYSHUB admin access.");
     }
+    sessionStorage.setItem("bh_admin","1");
+    openApp();
   }catch(e){
-    console.error(e);
-    alert(e.code==="auth/invalid-credential"?"Incorrect email or password.":(e.message||"Login failed."));
-  }finally{btn.disabled=false;btn.textContent="Continue"}
-}
-async function checkEmailVerified(){
-  if(!currentUser){return backToLogin()}
-  try{
-    await currentUser.reload();
-    currentUser=firebase.auth().currentUser;
-    if(currentUser.emailVerified){
-      sessionStorage.setItem("bh_admin","1");
-      openApp();
-    }else alert("Email is not verified yet. Please click the verification link first.");
-  }catch(e){alert(e.message||"Could not check verification.")}
-}
-async function resendVerification(){
-  if(!currentUser)return;
-  try{await currentUser.sendEmailVerification();alert("Verification email sent again.")}catch(e){alert(e.message||"Could not send email.")}
+    console.error("Admin login failed:",e);
+    const code=e.code||"";
+    if(code==="auth/invalid-credential"||code==="auth/wrong-password"||code==="auth/user-not-found"||code==="auth/invalid-login-credentials"){
+      msg.textContent="Email or password is incorrect. Check details or use Forgot Password.";
+    }else if(code==="auth/too-many-requests"){
+      msg.textContent="Too many attempts. Please wait a little and try again.";
+    }else if(code==="auth/network-request-failed"){
+      msg.textContent="Internet connection issue. Check your connection and try again.";
+    }else{
+      msg.textContent=e.message||"Login failed. Please try again.";
+    }
+  }finally{
+    btn.disabled=false;btn.textContent="Continue";
+  }
 }
 function forgotPassword(){
+  document.getElementById("resetEmail").value=document.getElementById("adminEmail").value.trim();
   document.getElementById("loginStep").classList.add("hidden");
   document.getElementById("verifyStep").classList.add("hidden");
   document.getElementById("resetStep").classList.remove("hidden");
   document.getElementById("loginMsg").textContent="Enter your admin email to receive a password reset link.";
 }
 async function sendResetEmail(){
-  if(!firebaseReady)return;
-  const email=document.getElementById("resetEmail").value.trim();
-  if(!email)return alert("Enter your admin email.");
-  try{await firebase.auth().sendPasswordResetEmail(email);alert("Password reset email sent. Check your inbox.");backToLogin()}catch(e){alert(e.message||"Could not send reset email.")}
+  const email=document.getElementById("resetEmail").value.trim().toLowerCase();
+  const msg=document.getElementById("loginMsg");
+  if(email!==ADMIN_EMAIL){msg.textContent="Enter the authorized BOYSHUB admin email.";return;}
+  try{
+    await firebase.auth().sendPasswordResetEmail(email);
+    msg.textContent="Password reset email requested. Check Inbox, Spam and Promotions.";
+  }catch(e){
+    console.error("Password reset failed:",e);
+    msg.textContent=e.message||"Could not send reset email. Please try again.";
+  }
 }
 function backToLogin(){
   document.getElementById("loginStep").classList.remove("hidden");
   document.getElementById("verifyStep").classList.add("hidden");
   document.getElementById("resetStep").classList.add("hidden");
-  document.getElementById("loginMsg").textContent="Use your admin email and password. Email verification is required before access.";
+  document.getElementById("loginMsg").textContent="Sign in with your authorized admin email and password.";
 }
 async function logout(){
   sessionStorage.removeItem("bh_admin");
-  try{if(firebaseReady)await firebase.auth().signOut()}catch(e){}
-  location.reload()
+  try{if(firebaseReady)await firebase.auth().signOut();}catch(e){}
+  document.getElementById("app").classList.add("hidden");
+  document.getElementById("login").classList.remove("hidden");
+  document.getElementById("adminPassword").value="";
+  backToLogin();
 }
 const KEY_P="boyshub_products",KEY_O="boyshub_orders";
 const defaults=[{id:1,name:"Essential Black T-Shirt",price:499,discount:0,cat:"T-Shirts",stock:20,image:"",description:"Classic everyday T-shirt."},{id:2,name:"Oversized Street Tee",price:699,discount:0,cat:"T-Shirts",stock:15,image:"",description:"Relaxed oversized fit."}];
@@ -196,13 +213,5 @@ function renderDashboard(){mProducts.textContent=products.length;mOrders.textCon
 function renderAll(){renderDashboard();renderProducts();renderOrders();renderCustomers();renderStock()}
 function closeModal(id){document.getElementById(id).classList.remove("show")}
 function clearDemo(){if(confirm("Clear all demo products and orders?")){localStorage.removeItem(KEY_P);localStorage.removeItem(KEY_O);products=[];orders=[];renderAll();toast("Demo data cleared")}}
-if(sessionStorage.getItem("bh_admin")==="1" && firebaseReady){
-  firebase.auth().onAuthStateChanged(u=>{
-    if(u && sessionStorage.getItem("bh_phone_verified")==="1") openApp();
-    else sessionStorage.removeItem("bh_admin");
-  })
-}else if(!firebaseReady){
-  document.getElementById("loginMsg").textContent="Firebase setup is required before OTP login can work.";
-}
 </script>
 </body></html>
