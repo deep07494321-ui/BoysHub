@@ -308,7 +308,7 @@ body{background:var(--ivory)!important;color:var(--ink)!important;font-family:Ar
 
 <section class="section saleSection" id="sale"><div class="sectionHead"><div><span class="eyebrow">LIMITED-TIME OFFERS</span><h2>Sale — Up to 20% Off</h2></div><a class="link" href="shop.html?filter=sale">SHOP ALL SALE →</a></div><p class="saleIntro">Fresh fits, better prices. Grab your favourites before they are gone.</p><div class="grid" id="saleProducts"></div></section>
 
-<section class="section" id="categories"><div class="sectionHead"><div><span class="eyebrow">FIND YOUR FIT</span><h2>Shop by Category</h2></div></div><div class="categoryGrid"><div class="category"><h3>T-Shirts</h3><a href="shop.html?cat=T-Shirts"></a></div><div class="category"><h3>Bottomwear</h3><a href="shop.html?cat=Bottomwear"></a></div><div class="category"><h3>Hoodies</h3><a href="shop.html?cat=Hoodies"></a></div></div></section>
+<section class="section" id="categories"><div class="sectionHead"><div><span class="eyebrow">FIND YOUR FIT</span><h2>Shop by Category</h2></div></div><div class="categoryGrid"><div class="category"><h3>Men’s Collection</h3><p>Everyday essentials & streetwear</p><a href="shop.html?department=Men"></a></div><div class="category"><h3>Women’s Collection</h3><p>Modern styles for every day</p><a href="shop.html?department=Women"></a></div><div class="category"><h3>Kids’ Collection</h3><p>Comfortable fits for little ones</p><a href="shop.html?department=Kids"></a></div></div></section>
 
 <section class="story" id="story"><div class="storyText"><span class="eyebrow">THE VELQORO STANDARD</span><h2>Simple style.<br>Better everyday.</h2><p>We believe good clothes should look sharp, feel comfortable and fit real life. VELQORO brings together clean silhouettes, wearable colours and everyday essentials at honest prices.</p><a class="primary" href="shop.html">Explore VELQORO →</a></div><div class="storyVisual"><div class="pack">VELQORO</div></div></section>
 
@@ -324,7 +324,7 @@ const catalogGroups=[
 ];
 function buildCatalog(){const out=[];let id=100;catalogGroups.forEach(group=>group.categories.forEach(row=>row[1].forEach((name,i)=>out.push({id:id++,name,department:group.department,cat:row[0],price:row[2][i],discount:i===0?10:0,stock:12,image:"",description:group.department+" "+row[0]+" — comfortable everyday style."}))));return out;}
 const defaults=buildCatalog();
-let products=JSON.parse(localStorage.getItem("velqoro_products")||"null");if(!products){products=defaults;localStorage.setItem("velqoro_products",JSON.stringify(products));}
+let products=JSON.parse(localStorage.getItem("velqoro_products")||"null");if(!products){products=defaults;localStorage.setItem("velqoro_products",JSON.stringify(products));}else if(!localStorage.getItem("velqoro_catalog_v2")){const names=new Set(products.map(p=>p.name));products=products.concat(defaults.filter(p=>!names.has(p.name)));localStorage.setItem("velqoro_products",JSON.stringify(products));localStorage.setItem("velqoro_catalog_v2","1");}
 let cart=JSON.parse(localStorage.getItem("velqoro_cart")||"[]");
 const money=n=>"₹"+Math.round(Number(n)||0);
 function count(){document.getElementById("count").textContent=cart.reduce((a,b)=>a+(Number(b.qty)||0),0)}
