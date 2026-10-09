@@ -21,26 +21,19 @@ label{display:block;font-size:13px;font-weight:700;margin:13px 0 6px}input,selec
 <div class="loginbox">
 <div class="logo">BOYSHUB</div>
 <h1>Admin Login</h1>
-<p class="muted">Secure email verification for your store admin.</p>
+<p class="muted">Sign in with your authorized admin email and password.</p>
 <div id="loginStep">
 <label>Admin Email</label><input id="adminEmail" type="email" autocomplete="username" placeholder="admin@example.com">
 <label>Password</label><input id="adminPassword" type="password" autocomplete="current-password" placeholder="Enter password">
 <button id="loginBtn" style="width:100%;margin-top:12px" onclick="loginWithEmail()">Continue</button>
 <button class="btn-light" style="width:100%;margin-top:8px" onclick="forgotPassword()">Forgot Password?</button>
 </div>
-<div id="verifyStep" class="hidden">
-<div class="badge" style="margin:8px 0 14px">Email verification required</div>
-<p class="hint">We sent a verification email to <b id="verifyEmail"></b>. Open that email and click the verification link.</p>
-<button style="width:100%;margin-top:12px" onclick="checkEmailVerified()">I Have Verified My Email</button>
-<button class="btn-light" style="width:100%;margin-top:8px" onclick="resendVerification()">Resend Verification Email</button>
-<button class="btn-light" style="width:100%;margin-top:8px" onclick="backToLogin()">Back to Login</button>
-</div>
 <div id="resetStep" class="hidden">
 <label>Admin Email</label><input id="resetEmail" type="email" placeholder="admin@example.com">
 <button style="width:100%;margin-top:12px" onclick="sendResetEmail()">Send Password Reset Email</button>
 <button class="btn-light" style="width:100%;margin-top:8px" onclick="backToLogin()">Back to Login</button>
 </div>
-<p id="loginMsg" class="hint" style="margin-top:14px">Use your admin email and password. Email verification is required before access.</p>
+<p id="loginMsg" class="hint" style="margin-top:14px">Sign in with your authorized admin email and password.</p>
 </div></div>
 
 <div id="app" class="app hidden">
@@ -68,7 +61,7 @@ label{display:block;font-size:13px;font-weight:700;margin:13px 0 6px}input,selec
 
 <section id="stock" class="section"><div class="title"><div><h1>Stock</h1><span class="muted">Monitor inventory levels</span></div></div><div class="panel"><div class="tablewrap"><table class="table"><thead><tr><th>Product</th><th>Category</th><th>Stock</th><th>Value</th><th>Action</th></tr></thead><tbody id="stockRows"></tbody></table></div></div></section>
 
-<section id="settings" class="section"><div class="title"><div><h1>Settings</h1><span class="muted">Admin panel settings</span></div></div><div class="grid3"><div class="panel"><h3>Security Login</h3><p class="muted">Login flow: Admin Email + Password → Email Verification → Admin Panel. Password reset uses a secure Firebase email link.</p></div><div class="panel"><h3>Data</h3><p class="muted">This version stores products and orders in browser localStorage.</p><button class="btn-danger" onclick="clearDemo()">Clear Demo Data</button></div><div class="panel"><h3>Production</h3><p class="muted">Firebase Email/Password Auth and email verification protect the admin login. For full production security, connect the product/order database and restrict admin access server-side.</p></div></div></section>
+<section id="settings" class="section"><div class="title"><div><h1>Settings</h1><span class="muted">Admin panel settings</span></div></div><div class="grid3"><div class="panel"><h3>Security Login</h3><p class="muted">Login flow: authorized Admin Email + Password. Password reset uses a Firebase email link.</p></div><div class="panel"><h3>Data</h3><p class="muted">This version stores products and orders in browser localStorage.</p><button class="btn-danger" onclick="clearDemo()">Clear Demo Data</button></div><div class="panel"><h3>Production</h3><p class="muted">Firebase Email/Password Auth and email verification protect the admin login. For full production security, connect the product/order database and restrict admin access server-side.</p></div></div></section>
 </main></div></div>
 
 <div id="productModal" class="modal"><div class="modalbox"><div class="modalhead"><h2 id="productModalTitle">Add Product</h2><button class="btn-light" onclick="closeModal('productModal')">✕</button></div>
@@ -187,13 +180,6 @@ function money(n){return "₹"+Number(n||0).toLocaleString("en-IN")}
 function finalPrice(p){return Math.round(Number(p.price||0)*(1-Number(p.discount||0)/100))}
 function esc(v){return String(v??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[m]))}
 function toast(t){const x=document.getElementById("toast");x.textContent=t;x.style.display="block";setTimeout(()=>x.style.display="none",1800)}
-function login(){return sendOTP()}
-async function logout(){
-  sessionStorage.removeItem("bh_admin");
-  sessionStorage.removeItem("bh_phone_verified");
-  if(firebaseReady)try{await firebase.auth().signOut()}catch(e){}
-  location.reload()
-}
 function openApp(){document.getElementById("login").classList.add("hidden");document.getElementById("app").classList.remove("hidden");renderAll()}
 function showTab(tab){document.querySelectorAll(".section").forEach(x=>x.classList.toggle("active",x.id===tab));document.querySelectorAll(".nav").forEach(x=>x.classList.toggle("active",x.dataset.tab===tab));renderAll()}
 document.querySelectorAll(".nav").forEach(b=>b.onclick=()=>showTab(b.dataset.tab));
