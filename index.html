@@ -279,12 +279,21 @@ body{background:var(--ivory)!important;color:var(--ink)!important;font-family:Ar
 }
 </style>
 
+<style id="velqoro-sale-home">
+.saleSection{background:#f0eee6!important;border-top:1px solid #e0ddd2!important;border-bottom:1px solid #e0ddd2!important}
+.saleSection .sectionHead h2{font-size:clamp(30px,4vw,42px)!important}
+.saleIntro{margin:-8px 0 28px!important;color:#77766d!important;font-size:14px!important}
+.saleCard .pic{position:relative!important}
+.saleCard .badge{top:12px!important;left:12px!important;background:#6d7048!important;color:white!important;padding:8px 10px!important;font-size:10px!important;letter-spacing:1px!important}
+.saleCard .old{color:#999!important;font-weight:400!important}
+@media(max-width:700px){.saleIntro{font-size:13px!important;line-height:1.6!important}.saleSection .sectionHead{align-items:flex-start!important;gap:12px!important}.saleSection .link{white-space:nowrap!important;margin-top:14px!important;font-size:9px!important}}
+</style>
 </head>
 <body>
 <div class="topbar">FREE SHIPPING ON ORDERS ABOVE ₹999 &nbsp; • &nbsp; EASY 7-DAY RETURNS</div>
 <nav class="nav">
 <a class="logo brand" href="index.html" aria-label="VELQORO home"><span class="brandmark" aria-hidden="true"><svg viewBox="0 0 64 64" width="42" height="42"><defs><linearGradient id="vg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f1d69b"/><stop offset="1" stop-color="#9a6b2f"/></linearGradient></defs><path d="M8 12h18c13 0 17 15 5 20 15 4 10 20-4 20H8V12zm10 9v8h7c6 0 6-8 0-8h-7zm0 16v7h8c6 0 6-7 0-7h-8z" fill="url(#vg)"/><path d="M37 10h17L34 53H18l5-9h7L42 20h-9z" fill="#fff" opacity=".92"/></svg></span><span class="brandword">VELQORO</span></a>
-<div class="navlinks"><a href="shop.html">Shop</a><a href="#new">New Arrivals</a><a href="#categories">Categories</a><a href="#story">Our Story</a></div>
+<div class="navlinks"><a href="shop.html">Shop All</a><a href="#new">New Arrivals</a><a href="#categories">Categories</a><a href="#sale">Sale</a></div>
 <div class="actions"><button class="iconbtn" onclick="location.href='shop.html'">Search</button><a class="cartbtn" href="cart.html">Cart <span id="count">0</span></a><button class="menu" onclick="location.href='shop.html'">☰</button></div>
 </nav>
 
@@ -297,6 +306,8 @@ body{background:var(--ivory)!important;color:var(--ink)!important;font-family:Ar
 
 <section class="section" id="new"><div class="sectionHead"><div><span class="eyebrow">CURATED FOR YOU</span><h2>Best Sellers</h2></div><a class="link" href="shop.html">VIEW ALL PRODUCTS →</a></div><div class="grid" id="products"></div></section>
 
+<section class="section saleSection" id="sale"><div class="sectionHead"><div><span class="eyebrow">LIMITED-TIME OFFERS</span><h2>Sale — Up to 20% Off</h2></div><a class="link" href="shop.html?filter=sale">SHOP ALL SALE →</a></div><p class="saleIntro">Fresh fits, better prices. Grab your favourites before they are gone.</p><div class="grid" id="saleProducts"></div></section>
+
 <section class="section" id="categories"><div class="sectionHead"><div><span class="eyebrow">FIND YOUR FIT</span><h2>Shop by Category</h2></div></div><div class="categoryGrid"><div class="category"><h3>T-Shirts</h3><a href="shop.html?cat=T-Shirts"></a></div><div class="category"><h3>Bottomwear</h3><a href="shop.html?cat=Bottomwear"></a></div><div class="category"><h3>Hoodies</h3><a href="shop.html?cat=Hoodies"></a></div></div></section>
 
 <section class="story" id="story"><div class="storyText"><span class="eyebrow">THE VELQORO STANDARD</span><h2>Simple style.<br>Better everyday.</h2><p>We believe good clothes should look sharp, feel comfortable and fit real life. VELQORO brings together clean silhouettes, wearable colours and everyday essentials at honest prices.</p><a class="primary" href="shop.html">Explore VELQORO →</a></div><div class="storyVisual"><div class="pack">VELQORO</div></div></section>
@@ -306,13 +317,15 @@ body{background:var(--ivory)!important;color:var(--ink)!important;font-family:Ar
 <footer class="footer"><div><h3>VELQORO</h3><p>Modern boys fashion for everyday confidence.</p><div class="copy">© 2026 VELQORO. All rights reserved.</div></div><div><h3>Shop</h3><a href="shop.html">All Products</a><br><a href="shop.html?cat=T-Shirts">T-Shirts</a><br><a href="shop.html?cat=Bottomwear">Bottomwear</a><br><a href="shop.html?cat=Hoodies">Hoodies</a></div><div><h3>Help</h3><a href="cart.html">Cart & Checkout</a><br><a href="admin.html">Admin</a></div></footer>
 
 <script>
-const defaults=[{id:1,name:"Essential Black T-Shirt",price:499,discount:0,cat:"T-Shirts",stock:20,image:""},{id:2,name:"Oversized Street Tee",price:699,discount:0,cat:"T-Shirts",stock:15,image:""},{id:3,name:"Classic Cargo Pants",price:999,discount:0,cat:"Bottomwear",stock:10,image:""},{id:4,name:"Everyday Hoodie",price:1199,discount:0,cat:"Hoodies",stock:8,image:""}];
+const defaults=[{id:1,name:"Essential Black T-Shirt",price:499,discount:20,cat:"T-Shirts",stock:20,image:""},{id:2,name:"Oversized Street Tee",price:699,discount:15,cat:"T-Shirts",stock:15,image:""},{id:3,name:"Classic Cargo Pants",price:999,discount:10,cat:"Bottomwear",stock:10,image:""},{id:4,name:"Everyday Hoodie",price:1199,discount:0,cat:"Hoodies",stock:8,image:""}];
 const products=JSON.parse(localStorage.getItem("velqoro_products")||"null")||defaults;
 let cart=JSON.parse(localStorage.getItem("velqoro_cart")||"[]");
 const money=n=>"₹"+Math.round(Number(n)||0);
 function count(){document.getElementById("count").textContent=cart.reduce((a,b)=>a+(Number(b.qty)||0),0)}
 function add(id){const p=products.find(x=>x.id===id);if(!p)return;const x=cart.find(x=>x.id===id);x?x.qty++:cart.push({...p,qty:1});localStorage.setItem("velqoro_cart",JSON.stringify(cart));count();const b=document.querySelector('[data-id="'+id+'"]');if(b){b.textContent="ADDED ✓";setTimeout(()=>b.textContent="ADD TO CART",1000)}}
 document.getElementById("products").innerHTML=products.slice(0,4).map(p=>{const sale=Math.round(Number(p.price||0)*(1-Number(p.discount||0)/100));return '<article class="card"><div class="pic">'+(p.discount?'<span class="badge">SALE</span>':"")+(p.image?'<img src="'+p.image+'" alt="'+p.name+'">':'<div class="mini"></div>')+'</div><div class="info"><div class="cat">'+(p.cat||"VELQORO")+'</div><h3>'+p.name+'</h3><div class="price">'+money(sale)+(p.discount?'<span class="old">'+money(p.price)+'</span>':"")+'</div><button class="add" data-id="'+p.id+'" onclick="add('+p.id+')">ADD TO CART</button></div></article>'}).join("");
+const saleItems=products.filter(p=>Number(p.discount||0)>0).slice(0,4);
+document.getElementById("saleProducts").innerHTML=saleItems.length?saleItems.map(p=>{const price=Number(p.price||0),discount=Number(p.discount||0),now=Math.round(price*(1-discount/100));return '<article class="card saleCard"><div class="pic">'+(p.image?'<img src="'+p.image+'" alt="'+p.name+'">':'<div class="mini"></div>')+'<span class="badge">'+discount+'% OFF</span></div><div class="info"><div class="cat">'+(p.cat||"VELQORO")+'</div><h3>'+p.name+'</h3><div class="price">₹'+now+' <span class="old">₹'+price+'</span></div><button class="add" data-id="'+p.id+'" onclick="add('+p.id+')">ADD TO CART</button></div></article>'}).join(""):'<p class="saleEmpty">Sale items are being updated. Check back soon.</p>';
 count();
 </script>
 </body></html>
