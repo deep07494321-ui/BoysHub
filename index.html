@@ -560,6 +560,61 @@ footer{line-height:1.8}
 @media(max-width:760px){.heroVisual.vqHeroVisual{min-height:350px!important;height:52vh;max-height:470px}.vqHeroVisual .tag{top:16px;right:14px}.vqHeroBrand{left:14px;bottom:14px}}
 
 </style>
+<style id="velqoro-advanced-refresh">
+
+/* VELQORO modern editorial storefront refresh */
+:root{--vq-ink:#241b14;--vq-paper:#f7f0e6;--vq-gold:#b9945d;--vq-muted:#827362}
+html{scroll-behavior:smooth;scroll-padding-top:85px}
+body{overflow-x:hidden;background:var(--vq-paper)}
+.nav{position:sticky!important;top:0;z-index:60;backdrop-filter:blur(16px)}
+.hero{gap:clamp(26px,5vw,72px)!important;align-items:center!important}
+.heroCopy .eyebrow{letter-spacing:3px!important;font-size:10px!important}
+.heroCopy h1{font-size:clamp(42px,6.6vw,88px)!important;line-height:.96!important;letter-spacing:-2px!important;text-wrap:balance}
+.heroCopy p{max-width:460px;line-height:1.85!important;color:#786b5d}
+.heroNotes{display:flex;flex-wrap:wrap;gap:12px 24px}
+.heroNotes span{font-size:10px!important;letter-spacing:2px!important}
+.heroVisual.vqEditorialHero{position:relative!important;display:block!important;min-height:clamp(410px,54vw,660px)!important;overflow:hidden!important;isolation:isolate;background:#ded0bc!important;border-radius:3px!important;box-shadow:0 26px 70px #2c1c101a}
+.vqHeroImage{position:absolute;inset:0;background-image:linear-gradient(180deg,#20170d22,#20170d08 42%,#20170d9c),url('https://imgix.bustle.com/uploads/image/2024/8/5/97b3bf5f/wm202403kids12.jpeg?crop=focalpoint&fit=crop&fm=jpg&fp-x=0.5458&fp-y=0.2671&h=1200&w=1600');background-size:cover;background-position:center 34%;transform:scale(1.015)}
+.vqHeroShade{position:absolute;inset:0;background:linear-gradient(130deg,#f5e7d444,transparent 38%,#21160d24)}
+.vqHeroTopline{position:absolute;left:22px;right:22px;top:22px;display:flex;justify-content:space-between;gap:12px;color:#fff7e9;font-size:9px;letter-spacing:2px;text-shadow:0 1px 8px #21160d80}
+.vqHeroProduct{position:absolute;left:7%;right:7%;top:17%;bottom:16%;display:flex;align-items:center;justify-content:center}
+.vqProductCard{width:min(66%,340px);aspect-ratio:.78;background:linear-gradient(145deg,#f7f0e5ed,#d9c8b0e8);border:1px solid #fff9e2b5;box-shadow:0 26px 65px #21160d30;display:grid;place-items:center;transform:rotate(2deg);border-radius:2px}
+.vqTeeShape{position:relative;width:78%;aspect-ratio:.82;background:linear-gradient(130deg,#3e3a35,#171615 70%,#302b25);clip-path:polygon(25% 8%,38% 3%,62% 3%,75% 8%,100% 25%,85% 43%,75% 34%,75% 96%,25% 96%,25% 34%,15% 43%,0 25%);filter:drop-shadow(0 14px 12px #21160d38)}
+.vqTeeShape:after{content:"";position:absolute;inset:5% 11% 8%;background:linear-gradient(100deg,#ffffff0c,transparent 40%,#00000018);clip-path:polygon(25% 0,75% 0,75% 100%,25% 100%)}
+.vqTeeNeck{position:absolute;z-index:2;left:37%;top:3%;width:26%;height:8%;border-radius:0 0 50% 50%;border:5px solid #62584b;border-top:0}
+.vqTeeMark{position:absolute;z-index:3;top:38%;left:0;right:0;text-align:center;color:#d9bd84;font:clamp(15px,2vw,22px) Georgia,serif;letter-spacing:2px}
+.vqTeeMark small{display:block;font:6px Arial,sans-serif;letter-spacing:2px;margin-top:5px}
+.vqProductLabel{position:absolute;left:0;top:8%;font:clamp(9px,1.1vw,12px) Georgia,serif;letter-spacing:2px;line-height:1.6;color:#fff8e9;text-shadow:0 2px 8px #1d140e}
+.vqProductMeta{position:absolute;bottom:-9%;left:0;right:0;display:flex;justify-content:space-between;gap:10px;color:#fff8e9;font-size:8px;letter-spacing:1.5px;text-shadow:0 2px 8px #1d140e}
+.vqHeroBottom{position:absolute;left:22px;right:22px;bottom:22px;display:flex;justify-content:space-between;align-items:center;gap:12px;color:#fff8e9;font-size:9px;letter-spacing:1.8px}
+.vqHeroBottom span:last-child{border-bottom:1px solid #fff8e9a0;padding-bottom:7px}
+.section{padding-top:clamp(50px,7vw,96px)!important;padding-bottom:clamp(50px,7vw,96px)!important}
+.sectionHead{align-items:end;gap:18px}
+.grid{gap:clamp(12px,2vw,24px)!important}
+.card{overflow:hidden;border:1px solid #241c160d!important;border-radius:3px!important;transition:transform .25s ease,box-shadow .25s ease}
+.card .pic{background:#efe5d8}
+.card img{transition:transform .5s ease}
+.card:hover{transform:translateY(-4px);box-shadow:0 16px 35px #24180d12}
+.card:hover img{transform:scale(1.035)}
+.trust>div{padding:22px 14px!important}
+@media(max-width:760px){
+ .hero{gap:26px!important}
+ .heroCopy h1{font-size:clamp(42px,11vw,66px)!important;letter-spacing:-1.6px!important}
+ .heroVisual.vqEditorialHero{min-height:480px!important;height:64vh;max-height:620px}
+ .vqHeroImage{background-position:center 30%}
+ .vqHeroTopline{left:14px;right:14px;top:15px;font-size:8px;letter-spacing:1.4px}
+ .vqHeroProduct{left:7%;right:7%;top:17%;bottom:17%}
+ .vqProductCard{width:min(74%,320px)}
+ .vqProductLabel{top:5%;font-size:9px}
+ .vqProductMeta{font-size:7px;letter-spacing:1px}
+ .vqHeroBottom{left:14px;right:14px;bottom:15px;font-size:7px;letter-spacing:1px}
+ .sectionHead{align-items:flex-start!important;flex-direction:column!important}
+ .grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+ .trust{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{transition-duration:.01ms!important;animation-duration:.01ms!important}}
+
+</style>
 </head>
 <body>
 <button class="kidsGuide" id="kidsGuide" aria-label="Open kids collection"><span class="kidsBuddy" aria-hidden="true"><img src="https://imgix.bustle.com/uploads/image/2024/8/5/97b3bf5f/wm202403kids12.jpeg?crop=focalpoint&fit=crop&fm=jpg&fp-x=0.5458&fp-y=0.2671&h=1200&w=1600" alt=""></span><span class="kidsBubble">Hi! Tap me for Kids ✨</span></button>
@@ -572,71 +627,19 @@ footer{line-height:1.8}
 
 <section class="hero">
 <div class="heroCopy"><span class="eyebrow">VELQORO / THE BOYS EDITION</span><h1>TIMELESS STYLE.<br>MODERN EDGE.</h1><p>Premium boyswear designed for everyday confidence. Explore elevated essentials, sharp casual looks and modern streetwear made to stand out.</p><a class="primary" href="#collections">Explore collections&nbsp; →</a><div class="heroNotes"><span>NEW ARRIVALS</span><span>BOYSWEAR</span><span>EVERYDAY LUXURY</span></div></div>
-<div class="heroVisual vqHeroVisual"><div class="vqHeroGlow"></div><svg id="vq3dArtwork" viewBox="0 0 900 600" role="img" aria-labelledby="vqShirtTitle vqShirtDesc" preserveAspectRatio="xMidYMid meet">
-      <title id="vqShirtTitle">VELQORO premium black T-shirt folding into a branded box</title>
-      <desc id="vqShirtDesc">A premium charcoal T-shirt with gold VELQORO chest branding folds its sleeves and body before packing.</desc>
-      <defs>
-        <linearGradient id="vqFabric" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#42403d"/><stop offset=".32" stop-color="#242321"/><stop offset=".68" stop-color="#171716"/><stop offset="1" stop-color="#34312d"/></linearGradient>
-        <linearGradient id="vqSleeve" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#45423d"/><stop offset=".48" stop-color="#252422"/><stop offset="1" stop-color="#141413"/></linearGradient>
-        <linearGradient id="vqGold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f2d9a0"/><stop offset=".45" stop-color="#bc914d"/><stop offset="1" stop-color="#815b2c"/></linearGradient>
-        <linearGradient id="vqBox" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6e4b2d"/><stop offset="1" stop-color="#332319"/></linearGradient>
-        <linearGradient id="vqLid" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#c6a16a"/><stop offset="1" stop-color="#8a6538"/></linearGradient>
-        <filter id="vqShadow" x="-40%" y="-40%" width="180%" height="200%"><feGaussianBlur stdDeviation="16"/></filter>
-        <pattern id="vqKnit" width="7" height="7" patternUnits="userSpaceOnUse"><path d="M0 1H7 M0 5H7" stroke="#fff" stroke-opacity=".035" stroke-width=".7"/></pattern>
-      </defs>
-      <ellipse cx="450" cy="500" rx="185" ry="24" fill="#000" opacity=".34" filter="url(#vqShadow)"/>
-      <ellipse cx="450" cy="500" rx="160" ry="13" fill="#c49a5a" opacity=".13"/>
-      <g id="vqPackBox" opacity="0">
-        <path d="M275 426 L450 370 L627 426 L450 493 Z" fill="#24180f" stroke="#c29b60" stroke-opacity=".5"/>
-        <path d="M275 426 L450 466 L450 548 L275 499 Z" fill="url(#vqBox)"/>
-        <path d="M450 466 L627 426 L627 500 L450 548 Z" fill="#4a3220"/>
-        <path d="M275 426 L450 370 L627 426 L450 466 Z" fill="url(#vqLid)" stroke="#e3c58b" stroke-opacity=".65"/>
-        <path d="M315 428 L450 389 L587 428 L450 455 Z" fill="#382719" opacity=".88"/>
-        <text x="450" y="428" text-anchor="middle" fill="url(#vqGold)" font-family="Georgia,serif" font-size="18" letter-spacing="4">VELQORO</text>
-        <text x="450" y="445" text-anchor="middle" fill="#d7bd8d" font-family="Arial,sans-serif" font-size="7" letter-spacing="2.5">MADE TO MOVE</text>
-        <path d="M450 466V548" stroke="#d0ad75" stroke-opacity=".35"/>
-      </g>
-      <g id="vqShirt" style="transform-origin:450px 310px">
-        <g id="vqShirtBody">
-          <path d="M356 167 L390 145 Q405 137 424 137 L476 137 Q495 137 510 145 L544 167 L532 194 L532 429 Q450 453 368 429 L368 194 Z" fill="url(#vqFabric)" stroke="#5e5850" stroke-width="2"/>
-          <path d="M356 167 L390 145 Q405 137 424 137 L476 137 Q495 137 510 145 L544 167 L532 194 L532 429 Q450 453 368 429 L368 194 Z" fill="url(#vqKnit)" opacity=".8"/>
-          <path d="M368 263 L368 429 Q450 453 532 429 L532 263" fill="none" stroke="#62594d" stroke-opacity=".65" stroke-width="1.5"/>
-          <path d="M381 280 Q395 340 383 410 M519 280 Q505 340 517 410" fill="none" stroke="#fff" stroke-opacity=".055" stroke-width="3"/>
-          <path d="M380 424 Q450 444 520 424" fill="none" stroke="#91806b" stroke-opacity=".65" stroke-width="2"/>
-          <path d="M384 429 Q450 447 516 429" fill="none" stroke="#080808" stroke-opacity=".7" stroke-width="2"/>
-          <path d="M390 149 Q404 162 450 162 Q496 162 510 149" fill="none" stroke="#090909" stroke-width="11" stroke-linecap="round"/>
-          <path d="M397 147 Q408 158 450 158 Q492 158 503 147" fill="none" stroke="#70685c" stroke-width="2"/>
-          <path d="M390 174 L408 190 M510 174 L492 190" stroke="#8e806d" stroke-opacity=".35" stroke-width="1.5"/>
-          <g id="vqChestMark">
-            <text x="485" y="235" fill="url(#vqGold)" font-family="Georgia,serif" font-size="13" letter-spacing="2.2">VQ</text>
-            <path d="M478 241H514" stroke="#bc9659" stroke-width="1"/>
-            <text x="496" y="251" text-anchor="middle" fill="#d6b779" font-family="Arial,sans-serif" font-size="5.5" letter-spacing="1.2">VELQORO</text>
-          </g>
-        </g>
-        <g id="vqLeftSleeve" style="transform-origin:340px 207px">
-          <path d="M356 167 L326 179 L282 213 L326 286 L368 263 L385 196 Z" fill="url(#vqSleeve)" stroke="#5c554b" stroke-width="2"/>
-          <path d="M292 222 L333 276 L365 258" fill="none" stroke="#95836a" stroke-opacity=".42" stroke-width="1.5"/>
-          <path d="M326 286 L337 280 L372 261" fill="none" stroke="#8e7d65" stroke-width="2"/>
-        </g>
-        <g id="vqRightSleeve" style="transform-origin:560px 207px">
-          <path d="M544 167 L574 179 L618 213 L574 286 L532 263 L515 196 Z" fill="url(#vqSleeve)" stroke="#5c554b" stroke-width="2"/>
-          <path d="M608 222 L567 276 L535 258" fill="none" stroke="#95836a" stroke-opacity=".42" stroke-width="1.5"/>
-          <path d="M574 286 L563 280 L528 261" fill="none" stroke="#8e7d65" stroke-width="2"/>
-        </g>
-      </g>
-      <g id="vqFoldedShirt" opacity="0" style="transform-origin:450px 415px">
-        <path d="M365 364 L398 349 L420 356 L480 356 L502 349 L535 364 L555 391 L530 409 L515 397 L515 456 Q450 470 385 456 L385 397 L370 409 L345 391 Z" fill="url(#vqFabric)" stroke="#726553" stroke-width="2"/>
-        <path d="M385 397 L385 456 Q450 470 515 456 L515 397" fill="none" stroke="#8c7c66" stroke-opacity=".55"/>
-        <path d="M420 356 Q450 369 480 356" fill="none" stroke="#8c7c66" stroke-opacity=".55" stroke-width="2"/>
-        <text x="450" y="415" text-anchor="middle" fill="url(#vqGold)" font-family="Georgia,serif" font-size="17" letter-spacing="3">VELQORO</text>
-        <path d="M414 425H486" stroke="#c5a064" stroke-width="1"/>
-      </g>
-      <g id="vqLidTop" opacity="0" style="transform-origin:450px 432px">
-        <path d="M280 420 L450 367 L620 420 L450 473 Z" fill="url(#vqLid)" stroke="#e6ca91" stroke-width="1.5"/>
-        <text x="450" y="423" text-anchor="middle" fill="#382719" font-family="Georgia,serif" font-size="18" letter-spacing="4">VELQORO</text>
-        <text x="450" y="440" text-anchor="middle" fill="#51381e" font-family="Arial,sans-serif" font-size="7" letter-spacing="2.5">PACKED WITH CARE</text>
-      </g>
-    </svg><div class="tag">THE BOYS<br>COLLECTION</div><div class="vqHeroBrand">VELQORO <span>PREMIUM BOYSWEAR</span></div></div><div class="tag">THE BOYS<br>COLLECTION</div></div>
+<div class="heroVisual vqEditorialHero">
+  <div class="vqHeroImage"></div>
+  <div class="vqHeroShade"></div>
+  <div class="vqHeroTopline"><span>VELQORO</span><span>SPRING / SUMMER COLLECTION</span></div>
+  <div class="vqHeroProduct">
+    <div class="vqProductLabel">THE EVERYDAY<br>ESSENTIAL</div>
+    <div class="vqProductCard">
+      <div class="vqTeeShape"><span class="vqTeeNeck"></span><span class="vqTeeMark">VQ<small>VELQORO</small></span></div>
+    </div>
+    <div class="vqProductMeta"><span>01 — SIGNATURE TEE</span><span>PREMIUM COTTON</span></div>
+  </div>
+  <div class="vqHeroBottom"><span>CONFIDENCE IN EVERY THREAD.</span><span>DISCOVER THE COLLECTION ↗</span></div>
+</div>
 </section>
 
 
@@ -692,39 +695,6 @@ count();
 (function(){const guide=document.getElementById("kidsGuide"),panel=document.getElementById("kidsPanel"),target=document.getElementById("kidsCollectionPanel");if(!guide||!panel||!target)return;guide.addEventListener("click",function(){target.scrollIntoView({behavior:"smooth",block:"center"});setTimeout(function(){panel.classList.add("open");guide.querySelector(".kidsBubble").textContent="Tap a collection below 👇";},450);});})();
 </script>
 
-<script>
-(() => {
- const art=document.getElementById('vq3dArtwork'),hero=document.querySelector('.vqHeroVisual');
- if(!art||!hero)return;
- const byId=id=>document.getElementById(id);
- const shirt=byId('vqShirt'),left=byId('vqLeftSleeve'),right=byId('vqRightSleeve'),body=byId('vqShirtBody'),chest=byId('vqChestMark'),box=byId('vqPackBox'),folded=byId('vqFoldedShirt'),lid=byId('vqLidTop');
- const clamp=(v,a=0,b=1)=>Math.max(a,Math.min(b,v));
- const ease=(a,b,v)=>{const t=clamp((v-a)/(b-a));return t*t*(3-2*t)};
- let progress=0;
- function update(){
-   const travel=Math.max(1,Math.min(2600,document.documentElement.scrollHeight*.34));
-   progress=clamp(window.scrollY/travel);
-   const turn=ease(.02,.18,progress),sleeves=ease(.16,.36,progress),fold=ease(.34,.57,progress),pack=ease(.52,.79,progress),seal=ease(.76,.96,progress);
-   const travelY=progress* Math.min(34,window.innerHeight*.045);
-   art.style.top='calc('+(window.innerWidth<760?'24vh':'18vh')+' + '+travelY+'px)';
-   art.style.opacity=String(1-ease(.88,1,progress)*.55);
-   shirt.setAttribute('transform','translate(450 310) rotate('+(-5+turn*10)+') scale('+(1-pack*.48)+') translate(-450 -310)');
-   left.setAttribute('transform','rotate('+(-sleeves*78)+' 340 207)');
-   right.setAttribute('transform','rotate('+(sleeves*78)+' 560 207)');
-   body.setAttribute('transform','translate(0 '+(fold*70)+') scale(1 '+(1-fold*.46)+')');
-   chest.style.opacity=String(1-fold*.35);
-   shirt.style.opacity=String(1-ease(.66,.84,progress));
-   folded.style.opacity=String(pack);
-   folded.setAttribute('transform','translate(0 '+((1-pack)*28)+') scale('+(0.86+pack*.14)+')');
-   box.style.opacity=String(pack);
-   box.setAttribute('transform','translate(0 '+((1-pack)*60)+')');
-   lid.style.opacity=String(pack);
-   lid.setAttribute('transform','translate(0 '+(-pack*22-seal*9)+')');
- }
- window.addEventListener('scroll',update,{passive:true});
- window.addEventListener('resize',update,{passive:true});
- update();
-})();
-</script>
+
 
 </body></html>
