@@ -543,6 +543,19 @@ footer{line-height:1.8}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
 
 </style>
+<style id="velqoro-integrated-hero-animation">
+
+/* Signature garment animation integrated into the existing homepage hero */
+.heroVisual.vqHeroVisual{position:relative;min-height:440px;overflow:hidden;isolation:isolate;background:radial-gradient(ellipse at 52% 42%,#c9a36a35,transparent 56%),linear-gradient(145deg,#eee4d5,#d7c5ae 65%,#c7b095)!important;border-radius:4px;box-shadow:0 28px 65px #2b1b1020}
+.vqHeroVisual .vqHeroGlow{position:absolute;width:70%;aspect-ratio:1;left:15%;top:10%;border-radius:50%;background:#fff9ee45;filter:blur(24px)}
+.vqHeroVisual #vq3dArtwork{position:absolute;inset:0;width:100%;height:100%;display:block;z-index:1}
+.vqHeroVisual #vqShirt{filter:drop-shadow(0 22px 18px #24170d4d)}
+.vqHeroVisual .tag{z-index:3}
+.vqHeroBrand{position:absolute;left:22px;bottom:20px;z-index:3;font:12px Georgia,serif;letter-spacing:3px;color:#3b2b1d}
+.vqHeroBrand span{display:block;margin-top:5px;font:8px Arial,sans-serif;letter-spacing:2px;color:#6e5740}
+@media(max-width:760px){.heroVisual.vqHeroVisual{min-height:350px!important;height:52vh;max-height:470px}.vqHeroVisual .tag{top:16px;right:14px}.vqHeroBrand{left:14px;bottom:14px}}
+
+</style>
 </head>
 <body>
 <button class="kidsGuide" id="kidsGuide" aria-label="Open kids collection"><span class="kidsBuddy" aria-hidden="true"><img src="https://imgix.bustle.com/uploads/image/2024/8/5/97b3bf5f/wm202403kids12.jpeg?crop=focalpoint&fit=crop&fm=jpg&fp-x=0.5458&fp-y=0.2671&h=1200&w=1600" alt=""></span><span class="kidsBubble">Hi! Tap me for Kids ✨</span></button>
@@ -555,18 +568,7 @@ footer{line-height:1.8}
 
 <section class="hero">
 <div class="heroCopy"><span class="eyebrow">VELQORO / THE BOYS EDITION</span><h1>TIMELESS STYLE.<br>MODERN EDGE.</h1><p>Premium boyswear designed for everyday confidence. Explore elevated essentials, sharp casual looks and modern streetwear made to stand out.</p><a class="primary" href="#collections">Explore collections&nbsp; →</a><div class="heroNotes"><span>NEW ARRIVALS</span><span>BOYSWEAR</span><span>EVERYDAY LUXURY</span></div></div>
-<div class="heroVisual"><div class="shirt"></div><div class="tag">THE BOYS<br>COLLECTION</div></div>
-</section>
-
-<section id="vq3dExperience" aria-label="VELQORO branded T-shirt folding and packing animation">
-  <div class="vq3dIntro">
-    <span class="vq3dKicker">VELQORO / MADE TO MOVE</span>
-    <h2>From our hands<br>to your home.</h2>
-    <p>Meet the VELQORO signature tee. Scroll to turn the garment, fold it with care, and place it into its premium shipping box.</p>
-  </div>
-  <div id="vq3dStage">
-    <div class="vq3dStep" id="vq3dStep">01 / SIGNATURE TEE</div><div class="vq3dPct" id="vq3dPct">0%</div>
-    <svg id="vq3dArtwork" viewBox="0 0 900 600" role="img" aria-labelledby="vqShirtTitle vqShirtDesc" preserveAspectRatio="xMidYMid meet">
+<div class="heroVisual vqHeroVisual"><div class="vqHeroGlow"></div><svg id="vq3dArtwork" viewBox="0 0 900 600" role="img" aria-labelledby="vqShirtTitle vqShirtDesc" preserveAspectRatio="xMidYMid meet">
       <title id="vqShirtTitle">VELQORO premium black T-shirt folding into a branded box</title>
       <desc id="vqShirtDesc">A premium charcoal T-shirt with gold VELQORO chest branding folds its sleeves and body before packing.</desc>
       <defs>
@@ -630,12 +632,10 @@ footer{line-height:1.8}
         <text x="450" y="423" text-anchor="middle" fill="#382719" font-family="Georgia,serif" font-size="18" letter-spacing="4">VELQORO</text>
         <text x="450" y="440" text-anchor="middle" fill="#51381e" font-family="Arial,sans-serif" font-size="7" letter-spacing="2.5">PACKED WITH CARE</text>
       </g>
-    </svg>
-    <div class="vq3dHint">SCROLL TO FOLD & PACK ↓</div>
-  </div>
-  <div id="vq3dProgress"><span id="vq3dProgressFill"></span></div>
-  <p class="vq3dCaption"><strong id="vq3dCaption">The VELQORO signature tee.</strong> &nbsp;—&nbsp; Scroll to see it packed with care.</p>
+    </svg><div class="tag">THE BOYS<br>COLLECTION</div><div class="vqHeroBrand">VELQORO <span>PREMIUM BOYSWEAR</span></div></div><div class="tag">THE BOYS<br>COLLECTION</div></div>
 </section>
+
+
 
 <div class="trust"><div>PREMIUM FABRICS<span>Made for everyday comfort</span></div><div>SECURE CHECKOUT<span>Safe & simple shopping</span></div><div>FAST DELIVERY<span>Carefully packed orders</span></div><div>7-DAY RETURNS<span>Easy return support</span></div></div>
 
@@ -690,46 +690,33 @@ count();
 
 <script>
 (() => {
- const stage=document.getElementById('vq3dStage'),art=document.getElementById('vq3dArtwork');
- if(!stage||!art)return;
+ const art=document.getElementById('vq3dArtwork'),hero=document.querySelector('.vqHeroVisual');
+ if(!art||!hero)return;
  const byId=id=>document.getElementById(id);
- const step=byId('vq3dStep'),pct=byId('vq3dPct'),fill=byId('vq3dProgressFill'),caption=byId('vq3dCaption');
  const shirt=byId('vqShirt'),left=byId('vqLeftSleeve'),right=byId('vqRightSleeve'),body=byId('vqShirtBody'),chest=byId('vqChestMark'),box=byId('vqPackBox'),folded=byId('vqFoldedShirt'),lid=byId('vqLidTop');
  const clamp=(v,a=0,b=1)=>Math.max(a,Math.min(b,v));
  const ease=(a,b,v)=>{const t=clamp((v-a)/(b-a));return t*t*(3-2*t)};
- let progress=0,raf=0;
- function scrollUpdate(){
-  const rect=stage.getBoundingClientRect(),vh=window.innerHeight||700;
-  progress=clamp((vh*.86-rect.top)/(rect.height+vh*.48));
-  if(fill)fill.style.width=(progress*100)+'%';if(pct)pct.textContent=Math.round(progress*100)+'%';
-  let label='01 / SIGNATURE TEE',copy='The VELQORO signature tee.';
-  if(progress>.18){label='02 / TURN & INSPECT';copy='Premium charcoal fabric. Signature gold detailing.'}
-  if(progress>.36){label='03 / FOLD THE SLEEVES';copy='Each sleeve folds neatly toward the centre.'}
-  if(progress>.56){label='04 / FOLD THE BODY';copy='The tee folds into a compact, clean shape.'}
-  if(progress>.76){label='05 / PREMIUM PACKAGING';copy='Your VELQORO piece, packed with care.'}
-  if(progress>.92){label='06 / READY TO SHIP';copy='Sealed with care. Ready for its new home.'}
-  if(step)step.textContent=label;if(caption)caption.textContent=copy;
+ let progress=0;
+ function update(){
+   const max=Math.max(1,document.documentElement.scrollHeight-window.innerHeight);
+   progress=clamp(window.scrollY/max);
+   const turn=ease(.02,.20,progress),sleeves=ease(.16,.38,progress),fold=ease(.34,.58,progress),pack=ease(.53,.80,progress),seal=ease(.76,.96,progress);
+   shirt.setAttribute('transform','translate(450 310) rotate('+(-8+turn*365)+') scale('+(1-pack*.45)+') translate(-450 -310)');
+   left.setAttribute('transform','rotate('+(-sleeves*78)+' 340 207)');
+   right.setAttribute('transform','rotate('+(sleeves*78)+' 560 207)');
+   body.setAttribute('transform','translate(0 '+(fold*70)+') scale(1 '+(1-fold*.46)+')');
+   chest.style.opacity=String(1-fold*.35);
+   shirt.style.opacity=String(1-ease(.65,.83,progress));
+   folded.style.opacity=String(pack);
+   folded.setAttribute('transform','translate(0 '+((1-pack)*28)+') scale('+(0.86+pack*.14)+')');
+   box.style.opacity=String(pack);
+   box.setAttribute('transform','translate(0 '+((1-pack)*60)+')');
+   lid.style.opacity=String(pack);
+   lid.setAttribute('transform','translate(0 '+(-pack*22-seal*9)+')');
  }
- function render(){
-  raf=requestAnimationFrame(render);
-  const turn=ease(.04,.25,progress),sleeves=ease(.30,.48,progress),fold=ease(.49,.69,progress),pack=ease(.70,.92,progress),seal=ease(.88,1,progress);
-  shirt.setAttribute('transform','translate(450 310) rotate('+(-8+turn*368)+' ) scale('+(1-pack*.46)+') translate(-450 -310)');
-  left.setAttribute('transform','rotate('+(-sleeves*78)+' 340 207)');
-  right.setAttribute('transform','rotate('+(sleeves*78)+' 560 207)');
-  body.setAttribute('transform','translate(0 '+(fold*78)+') scale(1 '+(1-fold*.48)+')');
-  chest.style.opacity=String(1-fold*.35);
-  shirt.style.opacity=String(1-pack);
-  folded.style.opacity=String(pack);
-  folded.setAttribute('transform','translate(0 '+((1-pack)*35)+') scale('+(0.86+pack*.14)+')');
-  box.style.opacity=String(pack);
-  box.setAttribute('transform','translate(0 '+((1-pack)*100)+')');
-  lid.style.opacity=String(pack);
-  lid.setAttribute('transform','translate(0 '+(-pack*32-seal*8)+')');
-  if(pack>.25){folded.style.opacity=String(pack);shirt.style.opacity=String(1-ease(.72,.9,progress))}
- }
- function onScroll(){scrollUpdate()}
- window.addEventListener('scroll',onScroll,{passive:true});window.addEventListener('resize',onScroll,{passive:true});
- scrollUpdate();render();
+ window.addEventListener('scroll',update,{passive:true});
+ window.addEventListener('resize',update,{passive:true});
+ update();
 })();
 </script>
 
