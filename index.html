@@ -455,6 +455,25 @@ body{perspective:1400px}
 @media(prefers-reduced-motion:reduce){.heroVisual:before,.heroVisual .shirt,.heroVisual .tag,.heroCopy h1{animation:none!important}}
 </style>
 
+
+/* Cinematic scroll-controlled 3D T-shirt experience */
+#vq3dExperience{position:relative;background:linear-gradient(135deg,#211a16 0%,#473522 48%,#17120f 100%);color:#fff7e9;padding:90px 6vw 70px;overflow:clip}
+#vq3dExperience .vq3dIntro{max-width:780px;margin:0 auto 28px;text-align:center;position:relative;z-index:2}
+#vq3dExperience .vq3dKicker{color:#d8b477;letter-spacing:4px;font-size:11px;font-weight:700}
+#vq3dExperience h2{font-family:Georgia,serif;font-weight:400;font-size:clamp(34px,5vw,68px);line-height:1.02;margin:16px 0;color:#fff7e9}
+#vq3dExperience .vq3dIntro p{color:#d7c8b5;max-width:560px;margin:0 auto;line-height:1.7;font-size:14px}
+#vq3dStage{height:min(70vh,620px);min-height:380px;position:relative;max-width:1100px;margin:auto;border:1px solid #d8b47735;border-radius:4px;overflow:hidden;background:radial-gradient(ellipse at 50% 42%,#b08a4b30,transparent 54%),linear-gradient(180deg,#ffffff05,transparent);touch-action:pan-y}
+#vq3dCanvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+#vq3dStage .vq3dHint{position:absolute;bottom:18px;left:0;right:0;text-align:center;font-size:10px;letter-spacing:2.5px;color:#d8b477;pointer-events:none}
+#vq3dStage .vq3dStep{position:absolute;top:18px;left:18px;color:#d8b477;font-size:10px;letter-spacing:2px}
+#vq3dStage .vq3dPct{position:absolute;top:16px;right:18px;color:#fff7e9;font-size:12px;font-variant-numeric:tabular-nums}
+#vq3dProgress{height:2px;background:#ffffff24;max-width:1100px;margin:12px auto 0}
+#vq3dProgress span{display:block;width:0;height:100%;background:#d8b477;transition:width .08s linear}
+#vq3dExperience .vq3dCaption{text-align:center;color:#d7c8b5;font-size:12px;letter-spacing:1px;margin:16px auto 0}
+#vq3dExperience .vq3dCaption strong{color:#fff7e9;font-weight:600}
+@media(max-width:700px){#vq3dExperience{padding:58px 16px 45px}#vq3dStage{height:55vh;min-height:340px}#vq3dExperience .vq3dIntro p{font-size:13px}#vq3dStage .vq3dStep{font-size:9px;left:10px;top:12px}#vq3dStage .vq3dPct{right:10px;top:10px}}
+@media(prefers-reduced-motion:reduce){#vq3dProgress span{transition:none}}
+
 </head>
 <body>
 <button class="kidsGuide" id="kidsGuide" aria-label="Open kids collection"><span class="kidsBuddy" aria-hidden="true"><img src="https://imgix.bustle.com/uploads/image/2024/8/5/97b3bf5f/wm202403kids12.jpeg?crop=focalpoint&fit=crop&fm=jpg&fp-x=0.5458&fp-y=0.2671&h=1200&w=1600" alt=""></span><span class="kidsBubble">Hi! Tap me for Kids ✨</span></button>
@@ -468,6 +487,22 @@ body{perspective:1400px}
 <section class="hero">
 <div class="heroCopy"><span class="eyebrow">VELQORO / THE BOYS EDITION</span><h1>TIMELESS STYLE.<br>MODERN EDGE.</h1><p>Premium boyswear designed for everyday confidence. Explore elevated essentials, sharp casual looks and modern streetwear made to stand out.</p><a class="primary" href="#collections">Explore collections&nbsp; →</a><div class="heroNotes"><span>NEW ARRIVALS</span><span>BOYSWEAR</span><span>EVERYDAY LUXURY</span></div></div>
 <div class="heroVisual"><div class="shirt"></div><div class="tag">THE BOYS<br>COLLECTION</div></div>
+</section>
+
+
+<section id="vq3dExperience" aria-label="Interactive 3D T-shirt folding experience">
+  <div class="vq3dIntro">
+    <span class="vq3dKicker">VELQORO / MADE TO MOVE</span>
+    <h2>From everyday fit<br>to perfect pack.</h2>
+    <p>Scroll to rotate the 3D T-shirt, fold its sleeves and body, then pack it into its box. Your scroll controls every step.</p>
+  </div>
+  <div id="vq3dStage">
+    <div class="vq3dStep" id="vq3dStep">01 / THE T-SHIRT</div><div class="vq3dPct" id="vq3dPct">0%</div>
+    <canvas id="vq3dCanvas" aria-label="3D T-shirt model that folds into a VELQORO box as you scroll"></canvas>
+    <div class="vq3dHint">SCROLL DOWN TO FOLD&nbsp; ↓</div>
+  </div>
+  <div id="vq3dProgress"><span id="vq3dProgressFill"></span></div>
+  <p class="vq3dCaption"><strong id="vq3dCaption">A closer look at the fit.</strong> &nbsp;—&nbsp; Keep scrolling to pack it.</p>
 </section>
 
 <div class="trust"><div>PREMIUM FABRICS<span>Made for everyday comfort</span></div><div>SECURE CHECKOUT<span>Safe & simple shopping</span></div><div>FAST DELIVERY<span>Carefully packed orders</span></div><div>7-DAY RETURNS<span>Easy return support</span></div></div>
@@ -520,4 +555,85 @@ count();
 <script>
 (function(){const guide=document.getElementById("kidsGuide"),panel=document.getElementById("kidsPanel"),target=document.getElementById("kidsCollectionPanel");if(!guide||!panel||!target)return;guide.addEventListener("click",function(){target.scrollIntoView({behavior:"smooth",block:"center"});setTimeout(function(){panel.classList.add("open");guide.querySelector(".kidsBubble").textContent="Tap a collection below 👇";},450);});})();
 </script>
+
+<script type="module">
+(() => {
+ const canvas=document.getElementById('vq3dCanvas'), stage=document.getElementById('vq3dStage');
+ if(!canvas||!stage)return;
+ const stepLabel=document.getElementById('vq3dStep'),pctLabel=document.getElementById('vq3dPct'),fill=document.getElementById('vq3dProgressFill'),caption=document.getElementById('vq3dCaption');
+ let THREE,renderer,scene,camera,shirt,shirtRoot,leftSleeve,rightSleeve,lowerFold,boxGroup,raf=0,progress=0,ready=false;
+ const clamp=(v,a=0,b=1)=>Math.max(a,Math.min(b,v));
+ const smooth=(a,b,v)=>{const t=clamp((v-a)/(b-a));return t*t*(3-2*t)};
+ const mix=(a,b,t)=>a+(b-a)*t;
+ async function init(){
+  try{
+   THREE=await import('https://cdn.jsdelivr.net/npm/three@0.164.1/build/three.module.js');
+   scene=new THREE.Scene();scene.background=null;
+   camera=new THREE.PerspectiveCamera(34,1,.1,100);camera.position.set(0,0,10.8);
+   renderer=new THREE.WebGLRenderer({canvas,alpha:true,antialias:true,powerPreference:'low-power'});
+   renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,1.7));
+   renderer.outputColorSpace=THREE.SRGBColorSpace;
+   renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.15;
+   scene.add(new THREE.HemisphereLight(0xffe9c7,0x24150d,2.0));
+   const key=new THREE.DirectionalLight(0xfff0d6,3.0);key.position.set(-3,5,7);scene.add(key);
+   const rim=new THREE.DirectionalLight(0xc99548,2.4);rim.position.set(4,2,-4);scene.add(rim);
+   const floor=new THREE.Mesh(new THREE.CircleGeometry(2.8,64),new THREE.MeshBasicMaterial({color:0xb08a4b,transparent:true,opacity:.10}));floor.rotation.x=-Math.PI/2;floor.position.set(0,-2.2,0);scene.add(floor);
+   const gold=new THREE.MeshStandardMaterial({color:0xc6a16a,metalness:.55,roughness:.35});
+   const dark=new THREE.MeshStandardMaterial({color:0x35251a,metalness:.15,roughness:.55});
+   const shirtMat=new THREE.MeshStandardMaterial({color:0xf2e7d4,roughness:.72,metalness:0.02,side:THREE.DoubleSide});
+   const seamMat=new THREE.MeshStandardMaterial({color:0xd4c1a5,roughness:.85,side:THREE.DoubleSide});
+   shirtRoot=new THREE.Group();scene.add(shirtRoot);
+   shirt=new THREE.Group();shirtRoot.add(shirt);
+   // Upper torso, with rounded shoulder line and a real extruded thickness.
+   function panel(points,depth,material){const s=new THREE.Shape();s.moveTo(points[0][0],points[0][1]);for(let i=1;i<points.length;i++)s.lineTo(points[i][0],points[i][1]);s.closePath();const g=new THREE.ExtrudeGeometry(s,{depth,bevelEnabled:true,bevelSegments:2,steps:1,bevelSize:.045,bevelThickness:.035,curveSegments:8});g.computeVertexNormals();return new THREE.Mesh(g,material)}
+   const torsoPts=[[-.78,1.05],[-.57,1.28],[-.28,1.38],[.28,1.38],[.57,1.28],[.78,1.05],[.64,.65],[.58,-1.38],[-.58,-1.38],[-.64,.65]];
+   const upperPts=[[-.78,1.05],[-.57,1.28],[-.28,1.38],[.28,1.38],[.57,1.28],[.78,1.05],[.64,.65],[.58,.02],[-.58,.02],[-.64,.65]];
+   const upper=panel(upperPts,.14,shirtMat);upper.position.z=.02;shirt.add(upper);
+   lowerFold=new THREE.Group();lowerFold.position.set(0,.02,.02);shirt.add(lowerFold);
+   const lower=panel([[-.58,0],[.58,0],[.58,-1.38],[-.58,-1.38]],.14,shirtMat);lower.position.y=0;lowerFold.add(lower);
+   // sleeves pivot from the shoulders so they can fold inward.
+   leftSleeve=new THREE.Group();leftSleeve.position.set(-.59,1.12,.08);shirt.add(leftSleeve);
+   const ls=panel([[0,0],[-.67,.16],[-1.02,-.24],[-.68,-.65],[-.05,-.43]],.13,shirtMat);leftSleeve.add(ls);
+   rightSleeve=new THREE.Group();rightSleeve.position.set(.59,1.12,.08);shirt.add(rightSleeve);
+   const rs=panel([[0,0],[.67,.16],[1.02,-.24],[.68,-.65],[.05,-.43]],.13,shirtMat);rightSleeve.add(rs);
+   // Neck opening and understated premium chest mark.
+   const neck=new THREE.Mesh(new THREE.TorusGeometry(.28,.075,12,48),seamMat);neck.position.set(0,1.28,.20);neck.scale.set(1,.62,1);shirt.add(neck);
+   const mark=new THREE.Mesh(new THREE.BoxGeometry(.24,.12,.025),gold);mark.position.set(.32,.72,.19);shirt.add(mark);
+   const seam=new THREE.Mesh(new THREE.BoxGeometry(1.05,.018,.02),seamMat);seam.position.set(0,-1.27,.19);shirt.add(seam);
+   // Open presentation box with four walls and a lid; it waits below the garment until the final scroll phase.
+   boxGroup=new THREE.Group();scene.add(boxGroup);
+   const base=new THREE.Mesh(new THREE.BoxGeometry(2.05,.22,1.65),dark);base.position.y=-1.1;boxGroup.add(base);
+   const wallMat=new THREE.MeshStandardMaterial({color:0x8d6637,roughness:.65,metalness:.12,side:THREE.DoubleSide});
+   function wall(w,h,d,x,y,z){const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),wallMat);m.position.set(x,y,z);boxGroup.add(m)}
+   wall(2.05,.52,.10,0,-.72,-.78);wall(2.05,.52,.10,0,-.72,.78);wall(.10,.52,1.46,-.98,-.72,0);wall(.10,.52,1.46,.98,-.72,0);
+   const lid=new THREE.Mesh(new THREE.BoxGeometry(2.18,.12,1.78),gold);lid.position.set(0,-.40,-1.1);boxGroup.add(lid);
+   const logoText=new THREE.Mesh(new THREE.BoxGeometry(.52,.018,.025),gold);logoText.position.set(0,-.975,.84);boxGroup.add(logoText);
+   ready=true;resize();window.addEventListener('resize',resize,{passive:true});window.addEventListener('scroll',onScroll,{passive:true});onScroll();animate();
+  }catch(e){stage.classList.add('vq3dFallback');const fallback=document.createElement('div');fallback.style.cssText='position:absolute;inset:0;display:grid;place-items:center;color:#f2e7d4;text-align:center;padding:30px;font:14px/1.7 Arial';fallback.innerHTML='<div><div style="font-size:80px">👕</div><b>VELQORO 3D EXPERIENCE</b><br>Enable internet access to load the interactive 3D model.</div>';canvas.replaceWith(fallback)}
+ }
+ function resize(){if(!renderer||!camera)return;const w=stage.clientWidth,h=stage.clientHeight;renderer.setSize(w,h,false);camera.aspect=w/h;camera.position.z=w<520?12.3:10.8;camera.updateProjectionMatrix()}
+ function onScroll(){const rect=stage.getBoundingClientRect(),vh=window.innerHeight||700;progress=clamp((vh*.88-rect.top)/(rect.height+vh*.52));if(fill)fill.style.width=(progress*100).toFixed(1)+'%';if(pctLabel)pctLabel.textContent=Math.round(progress*100)+'%';
+  let step='01 / THE T-SHIRT',cap='A closer look at the fit.';
+  if(progress>.22){step='02 / ROTATE & INSPECT';cap='Turn the fit to see its shape.'}
+  if(progress>.43){step='03 / FOLD THE SLEEVES';cap='The sleeves fold neatly inward.'}
+  if(progress>.63){step='04 / FOLD & PACK';cap='The body folds into a compact shape.'}
+  if(progress>.84){step='05 / READY TO SHIP';cap='Packed with care. Ready for you.'}
+  if(stepLabel)stepLabel.textContent=step;if(caption)caption.textContent=cap;
+ }
+ function animate(){raf=requestAnimationFrame(animate);if(!ready)return;
+  const p=progress,turn=smooth(.02,.28,p),sleeve=smooth(.34,.52,p),bodyFold=smooth(.52,.72,p),pack=smooth(.70,.96,p);
+  shirt.rotation.y=mix(-.28,Math.PI*1.55,turn);shirt.rotation.x=mix(.03,-.12,turn);
+  shirt.position.y=mix(.05,.20,turn);
+  leftSleeve.rotation.z=mix(0,-1.25,sleeve);rightSleeve.rotation.z=mix(0,1.25,sleeve);
+  lowerFold.rotation.x=mix(0,-2.55,bodyFold);lowerFold.position.y=mix(.02,.55,bodyFold);
+  shirtRoot.scale.set(mix(1,.42,pack),mix(1,.42,pack),mix(1,.7,pack));
+  shirtRoot.position.set(mix(0,0,pack),mix(0,-.35,pack),mix(0,.7,pack));
+  boxGroup.position.y=mix(-2.8,-.25,pack);boxGroup.scale.setScalar(mix(.72,1,pack));boxGroup.rotation.y=mix(-.12,0,pack);
+  if(progress>.80){shirtRoot.position.y=mix(-.35,-.88,smooth(.8,1,p));shirt.rotation.y=mix(shirt.rotation.y,0,smooth(.82,1,p))}
+  renderer.render(scene,camera);
+ }
+ init();
+})();
+</script>
+
 </body></html>
