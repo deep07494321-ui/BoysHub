@@ -592,8 +592,8 @@ footer{line-height:1.8}
       </g>
       <g id="vqShirt" style="transform-origin:450px 310px">
         <g id="vqShirtBody">
-          <path d="M356 167 L390 145 Q405 137 424 137 L476 137 Q495 137 510 145 L544 167 L618 213 L574 286 L532 263 L532 429 Q450 453 368 429 L368 263 L326 286 L282 213 Z" fill="url(#vqFabric)" stroke="#5e5850" stroke-width="2"/>
-          <path d="M356 167 L390 145 Q405 137 424 137 L476 137 Q495 137 510 145 L544 167 L618 213 L574 286 L532 263 L532 429 Q450 453 368 429 L368 263 L326 286 L282 213 Z" fill="url(#vqKnit)" opacity=".8"/>
+          <path d="M356 167 L390 145 Q405 137 424 137 L476 137 Q495 137 510 145 L544 167 L532 194 L532 429 Q450 453 368 429 L368 194 Z" fill="url(#vqFabric)" stroke="#5e5850" stroke-width="2"/>
+          <path d="M356 167 L390 145 Q405 137 424 137 L476 137 Q495 137 510 145 L544 167 L532 194 L532 429 Q450 453 368 429 L368 194 Z" fill="url(#vqKnit)" opacity=".8"/>
           <path d="M368 263 L368 429 Q450 453 532 429 L532 263" fill="none" stroke="#62594d" stroke-opacity=".65" stroke-width="1.5"/>
           <path d="M381 280 Q395 340 383 410 M519 280 Q505 340 517 410" fill="none" stroke="#fff" stroke-opacity=".055" stroke-width="3"/>
           <path d="M380 424 Q450 444 520 424" fill="none" stroke="#91806b" stroke-opacity=".65" stroke-width="2"/>
@@ -714,8 +714,8 @@ count();
   raf=requestAnimationFrame(render);
   const turn=ease(.04,.25,progress),sleeves=ease(.30,.48,progress),fold=ease(.49,.69,progress),pack=ease(.70,.92,progress),seal=ease(.88,1,progress);
   shirt.setAttribute('transform','translate(450 310) rotate('+(-8+turn*368)+' ) scale('+(1-pack*.46)+') translate(-450 -310)');
-  left.setAttribute('transform','rotate('+(sleeves*78)+' 340 207)');
-  right.setAttribute('transform','rotate('+(-sleeves*78)+' 560 207)');
+  left.setAttribute('transform','rotate('+(-sleeves*78)+' 340 207)');
+  right.setAttribute('transform','rotate('+(sleeves*78)+' 560 207)');
   body.setAttribute('transform','translate(0 '+(fold*78)+') scale(1 '+(1-fold*.48)+')');
   chest.style.opacity=String(1-fold*.35);
   shirt.style.opacity=String(1-pack);
