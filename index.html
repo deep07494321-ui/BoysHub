@@ -321,22 +321,7 @@ body{background:#f8f7f2!important;color:var(--ink)!important}
 @media(max-width:760px){.hero{grid-template-columns:1fr!important}.heroCopy{padding:38px 24px!important}.heroVisual{min-height:360px!important}.heroCopy h1{font-size:54px!important}.collectionTiles{grid-template-columns:1fr 1fr!important;gap:10px}.collectionTile{height:300px}.womenTile{grid-column:1/-1;height:390px}.tileLabel{left:14px;bottom:16px}.tileLabel strong{font-size:23px}.tileLabel small{font-size:8px}.section{padding:44px 18px!important}.story{grid-template-columns:1fr!important}.storyVisual.storyPhoto{min-height:340px}}
 @media(max-width:400px){.collectionTiles{grid-template-columns:1fr!important}.womenTile{grid-column:auto}.collectionTile{height:350px}}
 
-/* Friendly 3D kids guide */
-.kidsGuide{position:fixed;right:18px;top:108px;z-index:30;display:flex;align-items:center;gap:8px;border:0;background:transparent;cursor:pointer;filter:drop-shadow(0 8px 10px #30231630);transition:transform .25s}
-.kidsGuide:hover{transform:translateY(-5px) scale(1.04)}
-.kidsBuddy{width:100px;height:116px;border-radius:22px;background:#fff;border:3px solid #fff;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden;box-shadow:0 8px 22px #30231630}
-.kidsBuddy img{width:100%;height:100%;object-fit:cover;object-position:center top;display:block}
 
-.kidsBubble{background:#fffdf7;border:1px solid #e5dac8;border-radius:16px 16px 3px 16px;padding:9px 11px;color:#383126;font-size:11px;font-weight:700;max-width:110px}
-.kidsPanel{display:none;background:#fffdf7;border:1px solid #ded5c6;border-radius:18px;padding:22px;margin:0 0 26px;box-shadow:0 15px 45px #241c1620}
-.kidsPanel.open{display:block;animation:kidsPop .3s ease-out}
-.kidsPanel h2{margin:0 0 8px;font-family:Georgia,serif;font-weight:400}
-.kidsPanel p{margin:0 0 16px;color:#686456;font-size:13px}
-.kidsPanelLinks{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
-.kidsPanelLinks a{display:block;text-decoration:none;color:#292820;background:#f1eee5;border-radius:12px;padding:16px 12px;font-size:13px;font-weight:700}
-.kidsPanelLinks a span{display:block;font-size:11px;font-weight:400;margin-top:6px;color:#6d7048}
-@keyframes kidsPop{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
-@media(max-width:650px){.kidsGuide{top:auto;bottom:16px;right:10px}.kidsBuddy{width:68px;height:78px}.kidsBubble{font-size:10px;max-width:85px}.kidsPanelLinks{grid-template-columns:repeat(2,minmax(0,1fr))}}
 </style>
 
 <style id="velqoro-rich-brown-design">
@@ -422,8 +407,6 @@ body{background:#f7efe5!important;color:#2a160f!important}
 .vqFashionLink{display:inline-flex;align-items:center;gap:28px;padding:15px 18px;border:1px solid #fff8eea6;color:#fff8ee;text-decoration:none;font-size:9px;letter-spacing:1.8px;transition:background .25s,color .25s}
 .vqFashionLink:hover{background:#fff8ee;color:#241b14}
 .vqFashionLink span{font-size:15px}
-.vqEditorialHero,.vqHeroImage,.vqHeroShade,.vqHeroProduct,.vqProductCard,.vqTeeShape,.vqHeroTopline,.vqHeroBottom,.vqProductLabel,.vqProductMeta,.vqHeroBrand{display:none!important}
-.kidsGuide{display:none!important}
 .collectionTile img{transition:transform .7s cubic-bezier(.2,.65,.25,1)}
 .collectionTile:hover img{transform:scale(1.045)}
 @media(max-width:760px){
@@ -468,17 +451,17 @@ body{background:#f7efe5!important;color:#2a160f!important}
 <section class="section saleSection" id="sale"><div class="sectionHead"><div><span class="eyebrow">LIMITED-TIME OFFERS</span><h2>Sale — Up to 20% Off</h2></div><a class="link" href="shop.html?filter=sale">SHOP ALL SALE →</a></div><p class="saleIntro">Fresh fits, better prices. Grab your favourites before they are gone.</p><div class="grid" id="saleProducts"></div></section>
 
 <section class="section collectionSection" id="collections"><div class="sectionHead"><div><span class="eyebrow">FIND YOUR NEXT FAVOURITE</span><h2>Shop every story</h2></div><a class="link" href="shop.html">VIEW ALL →</a></div><div class="collectionTiles">
-<a class="collectionTile womenTile" href="shop.html?department=Women"><img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=1000&q=85" alt="Women fashion collection"><span class="tileLabel"><small>01 / THE WOMEN'S EDIT</small><strong>Women’s Collection</strong><em>Explore the edit ↗</em></span></a>
-<a class="collectionTile menTile" href="shop.html?department=Men"><img src="https://media.gq.com.mx/photos/61ba29ced512bd51f0348f7c/1%3A1/w_1337%2Ch_1337%2Cc_limit/looks-de-ano-nuevo-para-hombre-que-no-debes-usar.jpg" alt="Men fashion collection"><span class="tileLabel"><small>02 / THE MEN'S EDIT</small><strong>Men’s Collection</strong><em>Find your fit ↗</em></span></a>
-<a class="collectionTile kidsTile" href="shop.html?department=Kids"><img src="https://imgix.bustle.com/uploads/image/2024/8/5/97b3bf5f/wm202403kids12.jpeg?crop=focalpoint&fit=crop&fm=jpg&fp-x=0.5458&fp-y=0.2671&h=1200&w=1600" alt="Kids fashion collection"><span class="tileLabel"><small>03 / THE LITTLE ONES</small><strong>Kids’ Collection</strong><em>Shop little looks ↗</em></span></a>
-</div></section>
+<a class="collectionTile womenTile" href="shop.html?department=Men&cat=T-Shirts"><img src="https://coquettekids.com/cdn/shop/files/kw-molo-pressrelease-aw1617-23_3143aa7e-aff7-447c-a394-a06c1b76de6c.jpg?v=1646830204&width=1080" alt="Contemporary boys streetwear collection" loading="lazy"><span class="tileLabel"><small>01 / THE STREETWEAR EDIT</small><strong>Streetwear</strong><em>Make your own rules ↗</em></span></a>
+<a class="collectionTile menTile" href="shop.html?department=Men&cat=Shirts"><img src="https://www.crimsouneclub.com/cdn/shop/files/BJK19248-2_7.jpg?v=1754558905" alt="Premium casual boys fashion" loading="lazy"><span class="tileLabel"><small>02 / EVERYDAY ESSENTIALS</small><strong>Everyday Style</strong><em>Find your everyday fit ↗</em></span></a>
+<a class="collectionTile kidsTile" href="shop.html?department=Men&cat=Hoodies"><img src="https://www.beatboyz.club/cdn/shop/products/BEAT_BOYZ_CLUB_BOYSWEAR_PROJECTION_HOODIE_BLUE_GEO8_1800x1800.jpg?v=1670163405" alt="Modern boys hoodie and streetwear" loading="lazy"><span class="tileLabel"><small>03 / THE NEW DROP</small><strong>Fresh Fits</strong><em>Explore new looks ↗</em></span></a>
+</div></section></section>
 <section class="section" id="kidsCollectionPanel" style="padding-top:0"><div class="kidsPanel" id="kidsPanel"><h2>Little looks, big smiles</h2><p>Choose a kids collection to explore.</p><div class="kidsPanelLinks"><a href="shop.html?department=Kids&cat=Kids%20T-Shirts">Kids T-Shirts<span>Everyday tees →</span></a><a href="shop.html?department=Kids&cat=Kids%20Sets">Kids Sets<span>Ready-made looks →</span></a><a href="shop.html?department=Kids&cat=Kids%20Dresses">Kids Dresses<span>Playful styles →</span></a><a href="shop.html?department=Kids&cat=Kids%20Bottomwear">Kids Bottomwear<span>Comfy bottoms →</span></a></div></div></section>
 
-<section class="story" id="story"><div class="storyText"><span class="eyebrow">THE VELQORO STANDARD</span><h2>Simple style.<br>Better everyday.</h2><p>We believe good clothes should look sharp, feel comfortable and fit real life. VELQORO brings together clean silhouettes, wearable colours and everyday essentials at honest prices.</p><a class="primary" href="shop.html">Explore VELQORO →</a></div><div class="storyVisual storyPhoto"><img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=1100&q=85" alt="Women browsing and styling fashion"><div class="pack">VELQORO</div></div></section>
+<section class="story" id="story"><div class="storyText"><span class="eyebrow">THE VELQORO STANDARD</span><h2>Made to move.<br>Styled to stand out.</h2><p>We believe style should feel as good as it looks. VELQORO brings together confident fits, versatile colours and comfortable essentials for boys who make every look their own.</p><a class="primary" href="shop.html">Explore VELQORO →</a></div><div class="storyVisual storyPhoto"><img src="https://coquettekids.com/cdn/shop/files/kw-molo-pressrelease-aw1617-23_3143aa7e-aff7-447c-a394-a06c1b76de6c.jpg?v=1646830204&width=1080" alt="Women browsing and styling fashion"><div class="pack">VELQORO</div></div></section>
 
 <section class="news"><span class="eyebrow">STAY IN THE LOOP</span><h2>New drops. No noise.</h2><p>Get updates about new arrivals and exclusive offers.</p><form onsubmit="event.preventDefault();alert('Thank you for joining VELQORO!')"><input type="email" required placeholder="Your email address"><button>JOIN</button></form></section>
 
-<footer class="footer"><div><h3>VELQORO</h3><p>Thoughtful everyday style for women, men and kids.</p><div class="copy">© 2026 VELQORO. All rights reserved.</div></div><div><h3>Shop</h3><a href="shop.html">All Products</a><br><a href="shop.html?cat=T-Shirts">T-Shirts</a><br><a href="shop.html?cat=Bottomwear">Bottomwear</a><br><a href="shop.html?cat=Hoodies">Hoodies</a></div><div><h3>Help & Customer Support</h3><a href="cart.html">Cart & Checkout</a><br><a href="policies.html#faq">FAQs</a><br><a href="policies.html#shipping">Shipping & Delivery</a><br><a href="policies.html#returns">Returns & Refunds</a><br><a href="policies.html#privacy">Privacy Policy</a><br><a href="policies.html#terms">Terms & Conditions</a><p style="margin:12px 0 4px">Email: <a id="supportEmailLink" href="mailto:velq0r00@gmail.com">velq0r00@gmail.com</a></p><p style="margin:4px 0">Phone: <a id="supportPhoneLink" href="tel:8054862251">8054862251</a></p></div></footer>
+<footer class="footer"><div><h3>VELQORO</h3><p>Modern everyday style for boys. Built for comfort. Made to stand out.</p><div class="copy">© 2026 VELQORO. All rights reserved.</div></div><div><h3>Shop</h3><a href="shop.html">All Products</a><br><a href="shop.html?cat=T-Shirts">T-Shirts</a><br><a href="shop.html?cat=Bottomwear">Bottomwear</a><br><a href="shop.html?cat=Hoodies">Hoodies</a></div><div><h3>Help & Customer Support</h3><a href="cart.html">Cart & Checkout</a><br><a href="policies.html#faq">FAQs</a><br><a href="policies.html#shipping">Shipping & Delivery</a><br><a href="policies.html#returns">Returns & Refunds</a><br><a href="policies.html#privacy">Privacy Policy</a><br><a href="policies.html#terms">Terms & Conditions</a><p style="margin:12px 0 4px">Email: <a id="supportEmailLink" href="mailto:velq0r00@gmail.com">velq0r00@gmail.com</a></p><p style="margin:4px 0">Phone: <a id="supportPhoneLink" href="tel:8054862251">8054862251</a></p></div></footer>
 
 <script>
 const catalogGroups=[
